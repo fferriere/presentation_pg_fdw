@@ -1,0 +1,24 @@
+#qui-suis-je #avatar {
+    width: 300px;
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+#qui-suis-je #logo-norsys {
+    width: 100px;
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+#qui-suis-je .flex-row {
+    display: flex;
+    justify-content: space-around;
+}
+
+#qui-suis-je .flex-element-centered {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
