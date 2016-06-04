@@ -1,8 +1,11 @@
-#qui-suis-je #avatar {
-    width: 300px;
+.reveal section img.clean-image {
     background: none;
     box-shadow: none;
     border: none;
+}
+
+#qui-suis-je #avatar {
+    width: 300px;
 }
 
 #qui-suis-je #logo-norsys {
@@ -21,4 +24,16 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+#logo-postgresql {
+    width: 200px;
+}
+
+.historique p {
+    margin: 0;
+}
+
+.text-line-through {
+    text-decoration: line-through;;
 }

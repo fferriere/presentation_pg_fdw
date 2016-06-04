@@ -26,17 +26,21 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+
+
 				<section id="title">
 					<h1>Foreign Data Wrapper</h1>
 					<h2>ou un réseau social pour vos données</h2>
 					<h2>sous PostgreSQL</h2>
 				</section>
+
+
 				<section id="qui-suis-je">
 					<h1>Qui suis-je</h1>
 
 					<div class="flex-row">
 						<div>
-							<img id="avatar" src="./assets/img/my-disk-world.png" alt="avatar" />
+							<img id="avatar" class="clean-image" src="./assets/img/my-disk-world.png" alt="avatar" />
 						</div>
 						<div class="flex-element-centered">
 							<div class="name">Florian FERRIERE</div>
@@ -56,6 +60,74 @@
 						</div>
 					</div>
 				</section>
+
+
+                <section>
+                    <section>
+                        <div>
+                            <div>
+                                <img id="logo-postgresql" class="clean-image" src="./assets/img/postgresql.png" alt="postgresql" />
+                            </div>
+
+                            <h1>
+                                PostgreSQL
+                            </h1>
+                        </div>
+                    </section>
+
+                    <section  data-transition="none" class="historique">
+                        <h1>Historique</h1>
+
+                        <p class="fragment">1974 : Création d'Ingres</p>
+                        <p class="fragment">1985 : Refonte de zéro d'Ingres pour créer <i>postgres</i></p>
+                        <p class="fragment">1995 : Ajout des fonctionnalités SQL => Postgres 95 <i>(v0)</i></p>
+                        <p class="fragment">1996 : Renommage en PostreSQL <i>(v1)</i></p>
+                        <p class="fragment">
+                            <span>01/1997 : v6.0</span><br />
+                            <span>05/2000 : v7.0</span><br />
+                            <span>01/2005 : v8.0</span>
+                        </p>
+                    </section>
+
+                    <section data-transition="none">
+                        <h1>Historique</h1>
+
+                        <div>
+                            <p class="fragment"><strong>07/2009 : v8.4</strong> => Prémice du FDW</p>
+                            <p class="fragment"><strong>09/2011 : v9.1</strong> => Arrivée des "Foreign Tables"</p>
+                            <p class="fragment">
+                                <strong>09/2013 : v9.3</strong><br />
+                                Ajout du type json<br />
+                                Ajout de l'écriture sur les Foreign Tables
+                            </p>
+                            <p class="fragment">
+                                <strong>10/2014 : v9.4</strong><br />
+                                Ajout du type jsonb<br />
+                                Ajout des triggers sur les Foreign Tables
+                            </p>
+                        </div>
+                    </section>
+
+                    <section data-transition="none">
+                        <h1>Historique</h1>
+
+                        <div>
+                            <p class="fragment">
+                                <strong>01/2016 : v9.5</strong><br />
+                                <i>INSERT ... ON CONFLICT DO NOTHING<span class="text-line-through">/UPDATE</span></i><br />
+                                IMPORT FOREIGN SCHEMA
+                            </p>
+                            <p class="fragment">
+                                <strong>T3/2016 : v9.6</strong><br />
+                                JOIN et SORT directement sur le serveur distant<br />
+                                UPDATE et DELETE avec une meilleur gestion transactionnele<br />
+                                Possibilité d'annulé une requête distante.
+                            </p>
+                        </div>
+                    </section>
+
+                </section>
+
 			</div>
 		</div>
 
