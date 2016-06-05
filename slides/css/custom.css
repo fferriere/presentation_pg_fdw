@@ -31,6 +31,11 @@
 }
 
 
-.text-line-through {
+.reveal .slides section .fragment.highlight-line-through {
+    opacity: 1;
+    visibility: visible;
+    text-decoration: none;
+}
+.reveal .slides section .fragment.highlight-line-through.visible {
     text-decoration: line-through;
 }
