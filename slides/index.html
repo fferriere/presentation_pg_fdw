@@ -36,7 +36,7 @@
 
 
 				<section id="qui-suis-je">
-					<h1>Qui suis-je</h1>
+					<h1>Qui suis-je ?</h1>
 
 					<div class="flex-row">
 						<div>
@@ -61,8 +61,8 @@
 					</div>
 				</section>
 
-
                 <section>
+
                     <section>
                         <div>
                             <div>
@@ -75,25 +75,140 @@
                         </div>
                     </section>
 
-                    <section  data-transition="none" class="historique">
+                    <section class="historique">
                         <h1>Historique</h1>
 
                         <p class="fragment">1974 : Création d'Ingres</p>
                         <p class="fragment">1985 : Refonte de zéro d'Ingres pour créer <i>postgres</i></p>
-                        <p class="fragment">1995 : Ajout des fonctionnalités SQL => Postgres 95 <i>(v0)</i></p>
-                        <p class="fragment">1996 : Renommage en PostreSQL <i>(v1)</i></p>
-                        <p class="fragment">
-                            <span>01/1997 : v6.0</span><br />
-                            <span>05/2000 : v7.0</span><br />
-                            <span>01/2005 : v8.0</span>
-                        </p>
+                        <p class="fragment">1995 : Ajout des fonctionnalités SQL => Postgres 95</p>
+                        <p class="fragment">1996 : Renommage en PostreSQL</p>
+                        <p class="fragment">Aujourd'hui version 9.5</p>
+
+                        <aside class="notes">
+                            <ul>
+                                <li>PostgreSQL est une base de données dont les origines commencent en 1974
+                                    avec la création d'Ingres par Michael Stonebraker.</li>
+                                <li>En 1985, il entamme une refonte à partir de zéro d'Ingres, intitulé postgres,
+                                    qui est le diminutif de "post-Ingres".</li>
+                                <li>Un tournant important arrive en 1995 avec l'ajout des fonctionnalités liés au SQL.
+                                    Le projet fut alors renommé "Postgres 95"</li>
+                                <li>1 an plus tard, il devient alors "PostgreSQL".</li>
+                                <li>Beaucoup de travaux plus tard ont pu donner la version 9.5 dernière version stable à ce jour.</li>
+                            </ul>
+                        </aside>
                     </section>
 
-                    <section data-transition="none">
-                        <h1>Historique</h1>
+                    <section class="fonctionnalites_generales">
+                        <h1>Fonctionnalités générales</h1>
 
+                        <ul>
+                            <li class="fragment">SGBDR</li>
+                            <li class="fragment">Accessible : JDBC, pgsql</li>
+                            <li class="fragment">
+                                SQL Avancé :
+                                <ul>
+                                    <li class="fragment">Trigger</li>
+                                    <li class="fragment">Common Table Expressions</li>
+                                    <li class="fragment">Vue et Vue matérialisée</li>
+                                    <li class="fragment">...</li>
+                                </ul>
+                            </li>
+                            <li class="fragment">PostGIS</li>
+                            <li class="fragment">...</li>
+                            <li class="fragment">Foreign Data Wrapper</li>
+                        </ul>
+
+                        <aside class="notes">
+                            <ul>
+                                <li>Server de Gestion de Base de Données Relationnel Objet</li>
+                                <li>
+                                    Accessible avec plein de language de programation :
+                                        - JDBC pour JAVA
+                                        - lib pgsql pour PHP
+                                </li>
+                                <li>SQL Avancé</li>
+                                <li>
+                                    PostGIS : gestion des objets Spatiaux et Géographique.
+                                    Utilisé par OpenStreetMap.
+                                </li>
+                                <li>...</li>
+                                <li>Foreign Data Wrapper</li>
+                            </ul>
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h1>Foreign Data Wrapper</h1>
+                        <h2>Qu'est-ce que c'est ?</h2>
+
+                        <p class="fragment">Norme SQL/MED (Management of External Data)</p>
+                        <p class="fragment">Créée en 2003</p>
+                        <p class="fragment">
+                            <br />
+                            Création de wrapper :
+                            <ul>
+                                <li class="fragment">Nativement en C</li>
+                                <li class="fragment">En python avec "Multicorn"</li>
+                                <li class="fragment">En ruby avec "Holycorn"</li>
+                            </ul>
+                        </p>
+
+                        <aside class="notes">
+                            Le Foreign Data Wrapper est une implémentation de la norme SQL/MED
+                            (Management of External Data), créée en 2003.
+                            Comme son nom l'indique, cette norme permet la gestion des données externes,
+                            depuis un autre SGBD ou des sources diverses.
+                            Il est possible de créer son propre wrapper en C en utilisant
+                            les fonctions prévues à cet effet.
+                            Des extensions comme "Multicorn" en python ou "Holycorn" en ruby
+                            ont été crées pour facilité la création de wrapper.
+                            Grace à ça, il existe, à ce jour, un nombre important de wrapper.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h1>Quelques Wrapper</h1>
+
+                        <p class="fragment">PostgreSQL</p>
+                        <p class="fragment">SGBD SQL courants : MySQL, Oracle, MSSQL, SQLite, ...</p>
+                        <p class="fragment">Connecteurs SQL génériques : ODBC, JDBC</p>
+                        <p class="fragment">NoSQL : MongoDB, Cassandra, Redis, ...</p>
+                        <p class="fragment">
+                            <br />
+                            CSV, XML, LDAP
+                        </p>
+                        <p class="fragment">
+                            Git,
+                            <span class="fragment">Logs,</span>
+                            <span class="fragment">WWW,</span>
+                            <span class="fragment">IMAP</span>
+                        </p>
+                        <p class="fragment">
+                            Processus,
+                            <span class="fragment">Twitter,</span>
+                            <span class="fragment">Docker,</span>
+                            <span class="fragment">...</span>
+                        </p>
+
+                        <aside class="notes">
+                            <ul>
+                                <li>Forcément nous avons la possibilité de connecté un serveur PostgreSQL avec un autre.</li>
+                                <li>Mais également avec d'autres SGBD.</li>
+                                <li>Soit avec les connecteurs natifs</li>
+                                <li>Soit avec des connecteurs génériques</li>
+                                <li>Il est aussi possible de dialoguer avec des serveurs NoSQL.</li>
+                                <li>Il y a aussi des connecteurs vers des fichiers CSV, XML ou un serveur LDAP</li>
+                                <li>Ou encore des systèmes plus atypiques comme Git, les logs systèmes, des services web ou des mails via le protocol IMAP</li>
+                                <li>Et pourquoi pas la liste des processus du système, votre timeline twitter</li>
+                                <li>Et même une connexion avec le serveur docker pour lister les containeurs ou les images</li>
+                                <li>Et tant d'autre</li>
+                            </ul>
+                        </aside>
+                    </section>
+
+                    <!--<section>
                         <div>
-                            <p class="fragment"><strong>07/2009 : v8.4</strong> => Prémice du FDW</p>
+                            <p class="fragment"><strong>07/2009 : v8.4</strong> => Démarrage de l'implémentation du SQL/MED</p>
                             <p class="fragment"><strong>09/2011 : v9.1</strong> => Arrivée des "Foreign Tables"</p>
                             <p class="fragment">
                                 <strong>09/2013 : v9.3</strong><br />
@@ -106,9 +221,9 @@
                                 Ajout des triggers sur les Foreign Tables
                             </p>
                         </div>
-                    </section>
+                    </section>-->
 
-                    <section data-transition="none">
+                    <!--<section data-transition="none">
                         <h1>Historique</h1>
 
                         <div>
@@ -124,7 +239,7 @@
                                 Possibilité d'annulé une requête distante.
                             </p>
                         </div>
-                    </section>
+                    </section>-->
 
                 </section>
 

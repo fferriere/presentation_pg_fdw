@@ -30,10 +30,7 @@
     width: 200px;
 }
 
-.historique p {
-    margin: 0;
-}
 
 .text-line-through {
-    text-decoration: line-through;;
+    text-decoration: line-through;
 }
