@@ -279,6 +279,53 @@
 
                 </section>
 
+                <section>
+                    <h1>Cas d'utilisation</h1>
+
+                    <section>
+                        <h2>Décentralisation</h2>
+
+                        <img id="pic-decentralisation" src="assets/img/decentralisation.png" alt="décentralisation" />
+
+                        <aside class="notes">
+                            Le premier cas d'utilisation qui m'est venu en tête et que j'ai pu mettre en pratique,
+                            est une utilisation décentraliser. Nous avons deux serveurs de bases de données.
+                            Le premier contient la totalité des données.
+                            Le second tout ou partie de ces données pour les rendre accessible à un serveur web.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>CQRS/ES</h2>
+
+                        <img id="pic-cqrs-es" src="assets/img/cqrs_es.png" alt="CQRS/ES" />
+
+                        <aside class="notes">
+                            Nous pouvons imaginer utiliser le FDW avec le CQRS/ES.
+                            Nous partons sur le même principe que le cas précédent
+                            mais les données sources sont enregistrés sous le type d'événement.
+                            Le type json(b) pourra ici nous être très utile.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>CQRS/ES Multiple</h2>
+
+                        <img id="pic-cqrs-es-multiple" src="assets/img/cqrs_es_multiple.png" alt="CQRS/ES" />
+
+                        <aside class="notes">
+                            Ce cas n'est autre qu'un dérivé du précédent.
+                            Par contre, là avons une séparation par métier.
+                            Cela permet d'avoir une base commune (l'event store)
+                            et les autres bases qui elles seront utilisées
+                            par les applications qui pourront être hébergées dans des endroits différents.
+
+                            Il est tout à fait possible d'avoir ce côté, multi-serveur avec des tables standards
+                            comme dans le cas "décentralisé".
+                        </aside>
+                    </section>
+                </section>
+
 			</div>
 		</div>
 
