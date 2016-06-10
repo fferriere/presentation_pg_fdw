@@ -632,6 +632,61 @@
                     </section>
                 </section>
 
+                <section>
+                    <h1>Cas pratique</h1>
+
+                    <section>
+                        <h2>Besoin</h2>
+
+                        <p class="fragment">Application Web</p>
+                        <p class="fragment">IBM AS400/DB2</p>
+                        <p class="fragment">
+                            <span class="fragment highlight-line-through">Driver PHP</span>
+                        </p>
+                        <p class="fragment">JDBC</p>
+                        <p class="fragment">jdbc2_fdw</p>
+
+                        <aside class="notes">
+                            Je vais maintenant vous parler du cas pratique que j'ai pu mettre en place.
+                            Voici une étude du besoin.
+
+                            Le besoin était d'avoir une application web,
+                            permettant à nos clients d'accéder à leurs informations.
+
+                            Les données sont stockées sur un IBM/AS400 qui intègre un base DB2.
+                            Premier problème le driver PHP-DB2 n'est pas facilement accessible, en tout cas sous Linux.
+                            OS de notre hébergement.
+                            J'ai réussi, tant bien que mal à le compiler, mais une fois fais j'avais une erreur de license.
+                            Bienvenue dans le monde merveilleux d'IBM.
+
+                            J'avais pu remarquer qu'avec un outils de DB SQL générique développé en Java (DBeaver),
+                            j'avais un connecteur JDBC pour DB2.
+                            Après configuration j'ai pu facilement accéder aux données sur le serveur.
+
+                            C'est là que j'ai découvert les FDW et le <a href="https://github.com/heimir-sverrisson/jdbc2_fdw/">jdbc2_fdw</a>.
+                            Après quelques essais plutôt concluant je me suis lancé.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Explication</h2>
+
+                        <p></p>
+                    </section>
+
+                    <section>
+                        <h2>Explication</h2>
+
+                        <img id="as_400_proxy_web" src="assets/img/as_400_proxy_web.png" alt="as_400_proxy_web" />
+                    </section>
+                </section>
+
+                <section>
+                    <h1>Merci</h1>
+
+                    <h2>Des questions ?</h2>
+                </section>
+
 			</div>
 		</div>
 
