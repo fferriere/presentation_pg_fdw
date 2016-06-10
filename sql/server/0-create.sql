@@ -248,3 +248,22 @@ VALUES
 ('YE', 'YEM', 'Yémen'),
 ('CS', 'SCG', 'Serbie-et-Monténégro'),
 ('ZM', 'ZMB', 'Zambie');
+
+CREATE TABLE customer (
+    id SERIAL NOT NULL PRIMARY KEY,
+    lastname VARCHAR(64) NOT NULL,
+    firstname VARCHAR(64) NOT NULL,
+    birthday DATE NOT NULL
+);
+
+INSERT INTO customer (lastname, firstname, birthday) VALUES
+('Potter', 'Harry', '1980-08-31'),
+('Weasley', 'Ron', '1980-03-01'),
+('Granger', 'Hermione', '1979-09-19'),
+('Rogue', 'Severus', '1960-01-09'),
+('Evans', 'Lily', '1960-01-30'),
+('Potter', 'James', '1960-03-27'),
+('Weasley', 'Ginny', '1981-08-11'),
+('McGonagall', 'Minerva', '1935-10-04'),
+('Black', 'Sirius', '1959-11-03'),
+('Hagrid', 'Rubeus', '1928-12-06');
