@@ -326,6 +326,312 @@
                     </section>
                 </section>
 
+                <section>
+                    <h1>Comment ça marche ?</h1>
+
+                    <section>
+                        <h2>Déclaration de la connexion</h2>
+
+                        <pre><code class="hlsql">
+    CREATE EXTENSION postgres_fdw;
+                        </code></pre>
+
+                        <aside class="notes">
+                            On déclare l'extension pour pouvoir l'utiliser dans PostgreSQL.
+                            /!\ Nécessite certains droits utilisateurs.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Création de la connexion</h2>
+
+                        <pre><code class="hlsql">
+    CREATE SERVER nom_remote
+    FOREIGN DATA WRAPPER postgres_fdw
+    OPTIONS (
+        host 'remote.url.lan',
+        dbname 'ma_db'
+    );
+                        </code></pre>
+
+                        <aside class="notes">
+                            On créer le serveur distant.
+                            D'autres options comme le port de connexion existent.
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Mapping utilisateur</h2>
+
+                        <pre><code class="hlsql">
+    CREATE USER MAPPING FOR mon_local_user
+        SERVER mon_remote
+        OPTIONS (
+            user 'mon_remote_user',
+            password 'mon_remote_passwd'
+        );
+                        </code></pre>
+
+                        <aside class="notes">
+                            Les comptes utilisateurs ne sont pas forcément les mêmes
+                            entre les deux instances.
+                            Nous devons donc mapper notre utisateur local avec l'utilisateur distant.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Création d'une table distante</h2>
+
+                        <pre><code class="hlsql">
+    CREATE FOREIGN TABLE table_locale_mais_distante (
+        id INTEGER,
+        col1 VARCHAR(32),
+        col2 BOOLEAN
+    )
+    SERVER mon_remote
+    OPTIONS (
+        table_name 'le_nom_de_ma_table',
+        updatable 'false'
+    );
+                        </code></pre>
+
+                        <aside class="notes">
+                            La création d'une table étrangère se fait presque comme une table normale.
+                            En plus du mot clef "FOREIGN"
+                            nous devons spécifié le serveur sur lequelle est la table ainsi que quelques options.
+                            Par défaut les tables distantes sont modifiables et le schema est 'public'.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Utilisation</h2>
+
+                        <pre><code class="hlsql">
+    SELECT id, col1
+    FROM table_locale_mais_distante
+    WHERE col2 IS TRUE
+    ORDER BY col1;
+                        </code></pre>
+
+                        <aside class="notes">
+                            Une fois la table correctement créée,
+                            l'utilisation est la même qu'avec une table standard.
+                        </aside>
+                    </section>
+
+                </section>
+
+                <section>
+                    <h1>Exemple</h1>
+
+                    <section>
+
+                        <p>
+                            <a href="https://github.com/fferriere/20160622_presentation_pg_fdw">Projet Github</a>
+                            <br />
+                            <i>Server</i> = "Base principale"
+                            <br />
+                            <i>Client</i> = "Web DB"
+                        </p>
+
+                        <aside class="notes">
+                            J'ai créer un projet avec 2 conteneurs docker
+                            pour montrer l'utilisation des foreign data wrapper.
+                            Le README.md explique comment l'utiliser.
+
+                            Les exemples suivants sont tirés de ce projet.
+                        </aside>
+
+                    </section>
+
+                    <section>
+                        <h2>Tables sur <i>server</i></h2>
+
+                        <pre><code class="hlsh">
+    server=# \d
+                    Liste des relations
+     Schéma |       Nom       |   Type   | Propriétaire
+    --------+-----------------+----------+--------------
+     public | country         | table    | docker
+     public | country_id_seq  | séquence | docker
+     public | customer        | table    | docker
+     public | customer_id_seq | séquence | docker
+    (4 lignes)
+                        </code></pre>
+
+                        <aside class="notes">
+                            Voici la liste des tables sur le serveur.
+                            Nous avons une table country et une autre customer
+                            ainsi que les sequence associée.
+                        </aside>
+
+                    </section>
+
+                    <section>
+                        <h2>Table sur le <i>server</i></h2>
+
+                        <pre><code class="hlsh">
+    server=# \d country
+                  Table « public.country »
+     Colonne |         Type          | Modificateurs
+    ---------+-----------------------+---------------
+     id      | integer               | non NULL
+     alpha2  | character(2)          | non NULL
+     alpha3  | character(3)          | non NULL
+     label   | character varying(64) | non NULL
+    Index :
+        "country_pkey" PRIMARY KEY, btree (id)
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Table sur le <i>server</i></h2>
+
+                        <pre><code class="hlsh">
+    server=# SELECT count(id) FROM country;
+     count
+    -------
+       241
+    (1 ligne)
+
+    server=# SELECT id, alpha2, alpha3, label
+            FROM public.country
+            WHERE alpha2 = 'FR';
+     id | alpha2 | alpha3 | label
+    ----+--------+--------+--------
+     75 | FR     | FRA    | France
+    (1 ligne)
+                        </code></pre>
+
+                        <aside class="notes">
+                            Nous pouvons voir qu'il y a des données.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Tables sur le <i>client</i></h2>
+
+                        <pre><code class="hlsh">
+    client=# \d
+                    Liste des relations
+    Schéma |    Nom     |       Type       | Propriétaire
+    --------+------------+------------------+--------------
+    public | f_country  | table distante   | docker
+    public | f_customer | table distante   | docker
+    public | m_customer | vue matérialisée | docker
+    public | u_country  | table distante   | docker
+    (4 lignes)
+                        </code></pre>
+
+                        <aside class="notes">
+                            Ici nous avons listé les tables sur le client.
+                            J'ai pour habitude de préfixer les tables étrangères par un f.
+                            Pour l'exemple j'ai créer la table u_country,
+                            c'est la même table que f_country mais updatable.
+                            Nous pouvons voir qu'il y a une vue matériliasée.
+                            Nous reviendrons dessus.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Table sur le <i>client</i></h2>
+
+                        <pre><code class="hlsh">
+    client=# \d f_country
+                  Table distante « public.f_country »
+     Colonne |         Type          | Modificateurs | Options FDW
+    ---------+-----------------------+---------------+-------------
+     id      | integer               |               |
+     alpha2  | character(2)          |               |
+     alpha3  | character(3)          |               |
+     label   | character varying(64) |               |
+    Server: remote
+    FDW Options: (schema_name 'public', table_name 'country', updatable 'false')
+                        </code></pre>
+
+                        <aside class="notes">
+                            Nous avons une description de la table f_country,
+                            à l'image de la table sur server.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Table sur le <i>client</i></h2>
+
+                        <pre><code class="hlsh">
+    client=# SELECT count(id) FROM f_country;
+     count
+    -------
+       241
+    (1 ligne)
+
+    client=# SELECT id, alpha2, alpha3, label
+            FROM public.f_country
+            WHERE alpha2 = 'FR';
+     id | alpha2 | alpha3 | label
+    ----+--------+--------+--------
+     75 | FR     | FRA    | France
+    (1 ligne)
+                        </code></pre>
+
+                        <aside class="notes">
+                            Nous pouvons voir qu'il y a les même données.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Vue matérialisée</h2>
+
+                        <pre><code class="hlsql">
+    CREATE MATERIALIZED VIEW m_customer AS
+    SELECT id, lastname, firstname,
+            date_part('year', age(birthday)) as age
+    FROM f_customer
+    WITH NO DATA;
+    CREATE INDEX m_customer_keys
+        ON m_customer (id);
+    REFRESH MATERIALIZED VIEW m_customer;
+                        </code></pre>
+
+                        <aside class="notes">
+                            Nous avons, ici, la requête de création de vue matérialisées.
+                            Une vue matérialisées est entre une table et une vue.
+                            La construction ce fait, comme une vue, à partir d'une requête.
+                            Par contre les données sont stockées.
+                            Ce qui fait que l'on peut ajouter des index.
+                            Le fait d'avoir une construction par requête permet
+                            de spécialiser les informations pour notre besoin.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Vue matérialisées</h2>
+
+                        <pre><code class="hlsh">
+    server=# SELECT id, lastname, firstname, birthday
+            FROM customer LIMIT 2;
+     id | lastname | firstname |  birthday
+    ----+----------+-----------+------------
+      1 | Potter   | Harry     | 1980-08-31
+      2 | Weasley  | Ron       | 1980-03-01
+    (2 lignes)
+
+    client=# SELECT id, lastname, firstname, age
+            FROM m_customer LIMIT 2;
+     id | lastname | firstname | age
+    ----+----------+-----------+-----
+      1 | Potter   | Harry     |  35
+      2 | Weasley  | Ron       |  36
+    (2 lignes)
+                        </code></pre>
+
+                        <aside class="notes">
+                            Nous pouvons voir que la vue matérialisée
+                            retourne bien des données différentes
+                            que la table initiale.
+                        </aside>
+                    </section>
+                </section>
+
 			</div>
 		</div>
 
