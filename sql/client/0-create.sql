@@ -45,3 +45,12 @@ WITH NO DATA;
 CREATE INDEX m_customer_keys
     ON m_customer (id);
 REFRESH MATERIALIZED VIEW m_customer;
+
+-- Foreign Schema
+
+CREATE SCHEMA remote_schema;
+
+IMPORT FOREIGN SCHEMA public
+FROM SERVER remote
+INTO remote_schema;
+

@@ -418,6 +418,24 @@
                         </aside>
                     </section>
 
+                    <section>
+                        <h2>Encore plus facile</h2>
+
+                        <pre><code class="hsql">
+    IMPORT FOREIGN SCHEMA schema_distant
+    FROM SERVER mon_remote
+    INTO mon_schema_local;
+                        </code></pre>
+
+                        <aside class="notes">
+                            Depuis la version 9.5 de PostgreSQL,
+                            nous avons la possibilité d'utiliser la commande
+                            IMPORT FOREIGN SCHEMA qui va permettre
+                            de récupérer les informations des tables distantes
+                            et les transposer sur l'instance locale.
+                        </aside>
+                    </section>
+
                 </section>
 
                 <section>
