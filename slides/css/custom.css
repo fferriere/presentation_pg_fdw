@@ -38,3 +38,57 @@
 .reveal .slides section .fragment.highlight-line-through.visible {
     text-decoration: line-through;
 }
+
+#fonctionnalites_generales h1 {
+    font-size: 1.8em;
+}
+
+#foreign_data_wrapper #fdw_explication h1 {
+    font-size: 2.3em;
+}
+#foreign_data_wrapper #fdw_explication h2 {
+    font-size: 1.5em;
+}
+#foreign_data_wrapper #fdw_explication #creation_wrapper {
+    margin-top: 40px;
+}
+
+.reveal #wrappers_list div p {
+    margin: 10px;
+}
+#wrappers_list #SGDB_fdw {
+    margin-bottom: 50px;
+}
+
+#pic-decentralisation, #pic-cqrs-es {
+    height: 8em;
+}
+#cqrs_es_multiple {
+    height: 13em;
+}
+
+#comment_ca_marche h1 {
+    font-size: 2.4em;
+}
+
+#utilisation_vue_materialisee code {
+    min-height: 425px;
+}
+
+.reveal #rafraichissement_proxy code {
+    font-size: 0.9em;
+}
+#rafraichissement_proxy h2 {
+    margin-top: 50px;
+}
+
+#complement2 ul li:first-child {
+    list-style-type: none;
+    margin-left: -60px;
+}
+#complement2 ul {
+    margin-bottom: 20px;
+}
+#complement2 h2 {
+    margin-top: 50px;
+}

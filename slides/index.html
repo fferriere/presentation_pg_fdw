@@ -1,4 +1,4 @@
-<!doctype html>
+s<!doctype html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -28,42 +28,41 @@
 			<div class="slides">
 
 
-				<section id="title">
-					<h1>Foreign Data Wrapper</h1>
-					<h2>ou un réseau social pour vos données</h2>
-					<h2>sous PostgreSQL</h2>
-				</section>
+                <section id="title">
+                <h1>Foreign Data Wrapper</h1>
+                <h2>ou un réseau social pour vos données</h2>
+                <h2>sous PostgreSQL</h2>
+                </section>
 
 
-				<section id="qui-suis-je">
-					<h1>Qui suis-je ?</h1>
+                <section id="qui-suis-je">
+                	<h1>Qui suis-je ?</h1>
 
-					<div class="flex-row">
-						<div>
-							<img id="avatar" class="clean-image" src="./assets/img/my-disk-world.png" alt="avatar" />
-						</div>
-						<div class="flex-element-centered">
-							<div class="name">Florian FERRIERE</div>
-							<br />
-							<div class="twitter">
-								<a href="https://twitter.com/FerriereFlorian">@FerriereFlorian</a>
-							</div>
-						</div>
-					</div>
+                	<div class="flex-row">
+                		<div>
+                			<img id="avatar" class="clean-image" src="./assets/img/my-disk-world.png" alt="avatar" />
+                		</div>
+                		<div class="flex-element-centered">
+                			<div class="name">Florian FERRIERE</div>
+                			<div class="twitter">
+                				<a href="https://twitter.com/FerriereFlorian">@FerriereFlorian</a>
+                			</div>
+                		</div>
+                	</div>
 
-					<div>
-						<div>
-							Développeur chez Norsys
-						</div>
-						<div>
-							<img id="logo-norsys" src="./assets/img/norsys.png" alt="norsys" />
-						</div>
-					</div>
-				</section>
+                	<div>
+                		<div>
+                			Développeur chez Norsys
+                		</div>
+                		<div>
+                			<img id="logo-norsys" src="./assets/img/norsys.png" alt="norsys" />
+                		</div>
+                	</div>
+                </section>
 
-                <section>
+                <section id="pg_en_3_mots">
 
-                    <section>
+                    <section id="postgresql">
                         <div>
                             <div>
                                 <img id="logo-postgresql" class="clean-image" src="./assets/img/postgresql.png" alt="postgresql" />
@@ -75,14 +74,14 @@
                         </div>
                     </section>
 
-                    <section class="historique">
+                    <section id="historique">
                         <h1>Historique</h1>
 
                         <p class="fragment">1974 : Création d'Ingres</p>
                         <p class="fragment">1985 : Refonte de zéro d'Ingres pour créer <i>postgres</i></p>
                         <p class="fragment">1995 : Ajout des fonctionnalités SQL => Postgres 95</p>
                         <p class="fragment">1996 : Renommage en PostreSQL</p>
-                        <p class="fragment">Aujourd'hui version 9.5</p>
+                        <p class="fragment">2016 : Version 9.5</p>
 
                         <aside class="notes">
                             <ul>
@@ -98,7 +97,7 @@
                         </aside>
                     </section>
 
-                    <section class="fonctionnalites_generales">
+                    <section id="fonctionnalites_generales">
                         <h1>Fonctionnalités générales</h1>
 
                         <ul>
@@ -107,9 +106,9 @@
                             <li class="fragment">
                                 SQL Avancé :
                                 <ul>
-                                    <li class="fragment">Trigger</li>
+                                    <li class="fragment">Triggers</li>
                                     <li class="fragment">Common Table Expressions</li>
-                                    <li class="fragment">Vue et Vue matérialisée</li>
+                                    <li class="fragment">Vues et Vues matérialisées</li>
                                     <li class="fragment">...</li>
                                 </ul>
                             </li>
@@ -137,14 +136,17 @@
                         </aside>
                     </section>
 
-                    <section>
+                </section>
+
+                <section id="foreign_data_wrapper">
+
+                    <section id="fdw_explication">
                         <h1>Foreign Data Wrapper</h1>
                         <h2>Qu'est-ce que c'est ?</h2>
 
                         <p class="fragment">Norme SQL/MED (Management of External Data)</p>
                         <p class="fragment">Créée en 2003</p>
-                        <p class="fragment">
-                            <br />
+                        <p id="creation_wrapper" class="fragment">
                             Création de wrapper :
                             <ul>
                                 <li class="fragment">Nativement en C</li>
@@ -166,29 +168,20 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="wrappers_list">
                         <h1>Quelques Wrapper</h1>
 
-                        <p class="fragment">PostgreSQL</p>
-                        <p class="fragment">SGBD SQL courants : MySQL, Oracle, MSSQL, SQLite, ...</p>
-                        <p class="fragment">Connecteurs SQL génériques : ODBC, JDBC</p>
-                        <p class="fragment">NoSQL : MongoDB, Cassandra, Redis, ...</p>
-                        <p class="fragment">
-                            <br />
-                            CSV, XML, LDAP
-                        </p>
-                        <p class="fragment">
-                            Git,
-                            <span class="fragment">Logs,</span>
-                            <span class="fragment">WWW,</span>
-                            <span class="fragment">IMAP</span>
-                        </p>
-                        <p class="fragment">
-                            Processus,
-                            <span class="fragment">Twitter,</span>
-                            <span class="fragment">Docker,</span>
-                            <span class="fragment">...</span>
-                        </p>
+                        <div id="SGDB_fdw">
+                            <p class="fragment">PostgreSQL</p>
+                            <p class="fragment">SGBD SQL courants : MySQL, Oracle, MSSQL, SQLite, ...</p>
+                            <p class="fragment">Connecteurs SQL génériques : ODBC, JDBC</p>
+                            <p class="fragment">NoSQL : MongoDB, Cassandra, Redis, ...</p>
+                        </div>
+                        <div id="extra_fdw">
+                            <p class="fragment">CSV, XML, LDAP</p>
+                            <p class="fragment">Git, Logs, WWW, IMAP</p>
+                            <p class="fragment">Processus, Twitter, Docker, ...</p>
+                        </div>
 
                         <aside class="notes">
                             <ul>
@@ -206,7 +199,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="evolution1">
                         <h1>Évolution (1/2)</h1>
                         <div>
                             <p class="fragment"><strong>07/2009 : v8.4</strong> => Démarrage de l'implémentation du SQL/MED</p>
@@ -239,7 +232,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="evolution2">
                         <h1>Évolution (2/2)</h1>
 
                         <div>
@@ -279,10 +272,13 @@
 
                 </section>
 
-                <section>
+                <section id="cas_utilisation">
                     <h1>Cas d'utilisation</h1>
 
-                    <section>
+                    <section id="vide">
+                    </section>
+
+                    <section id="decentralisation">
                         <h2>Décentralisation</h2>
 
                         <img id="pic-decentralisation" src="assets/img/decentralisation.png" alt="décentralisation" />
@@ -295,7 +291,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="cqrs_es">
                         <h2>CQRS/ES</h2>
 
                         <img id="pic-cqrs-es" src="assets/img/cqrs_es.png" alt="CQRS/ES" />
@@ -308,7 +304,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="cqrs_es_multiple">
                         <h2>CQRS/ES Multiple</h2>
 
                         <img id="pic-cqrs-es-multiple" src="assets/img/cqrs_es_multiple.png" alt="CQRS/ES" />
@@ -326,10 +322,10 @@
                     </section>
                 </section>
 
-                <section>
+                <section id="comment_ca_marche">
                     <h1>Comment ça marche ?</h1>
 
-                    <section>
+                    <section id="declaration_connexion">
                         <h2>Déclaration de la connexion</h2>
 
                         <pre><code class="hlsql">
@@ -342,7 +338,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="creation_connexion">
                         <h2>Création de la connexion</h2>
 
                         <pre><code class="hlsql">
@@ -359,7 +355,8 @@
                             D'autres options comme le port de connexion existent.
                         </aside>
                     </section>
-                    <section>
+
+                    <section id="mapping_utilisateur">
                         <h2>Mapping utilisateur</h2>
 
                         <pre><code class="hlsql">
@@ -378,7 +375,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="creation_table_distante">
                         <h2>Création d'une table distante</h2>
 
                         <pre><code class="hlsql">
@@ -402,7 +399,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="utilisation_table_distante">
                         <h2>Utilisation</h2>
 
                         <pre><code class="hlsql">
@@ -418,7 +415,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="encore_plus_facile">
                         <h2>Encore plus facile</h2>
 
                         <pre><code class="hsql">
@@ -438,10 +435,10 @@
 
                 </section>
 
-                <section>
+                <section id="exemple">
                     <h1>Exemple</h1>
 
-                    <section>
+                    <section id="exemple_presentation">
 
                         <p>
                             <a href="https://github.com/fferriere/20160622_presentation_pg_fdw">Projet Github</a>
@@ -461,7 +458,7 @@
 
                     </section>
 
-                    <section>
+                    <section id="tables_server">
                         <h2>Tables sur <i>server</i></h2>
 
                         <pre><code class="hlsh">
@@ -483,7 +480,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="description_table_server">
                         <h2>Table sur le <i>server</i></h2>
 
                         <pre><code class="hlsh">
@@ -500,7 +497,7 @@
                         </code></pre>
                     </section>
 
-                    <section>
+                    <section id="select_table_server">
                         <h2>Table sur le <i>server</i></h2>
 
                         <pre><code class="hlsh">
@@ -524,7 +521,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="tables_client">
                         <h2>Tables sur le <i>client</i></h2>
 
                         <pre><code class="hlsh">
@@ -549,7 +546,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="description_table_client">
                         <h2>Table sur le <i>client</i></h2>
 
                         <pre><code class="hlsh">
@@ -574,7 +571,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="select_table_client">
                         <h2>Table sur le <i>client</i></h2>
 
                         <pre><code class="hlsh">
@@ -597,10 +594,12 @@
                             Nous pouvons voir qu'il y a les même données.
                         </aside>
                     </section>
+                </section>
 
-                    <section>
-                        <h2>Vue matérialisée</h2>
+                <section id="vue_materialisee">
+                    <h1>Vue matérialisée</h1>
 
+                    <section id="creation_vue_materialisee">
                         <pre><code class="hlsql">
     CREATE MATERIALIZED VIEW m_customer AS
     SELECT id, lastname, firstname,
@@ -631,9 +630,7 @@
                         </aside>
                     </section>
 
-                    <section>
-                        <h2>Vue matérialisées</h2>
-
+                    <section id="utilisation_vue_materialisee">
                         <pre><code class="hlsh">
     server=# SELECT id, lastname, firstname, birthday
             FROM customer LIMIT 2;
@@ -660,10 +657,10 @@
                     </section>
                 </section>
 
-                <section>
+                <section id="cas_pratique">
                     <h1>Cas pratique</h1>
 
-                    <section>
+                    <section id="besoin">
                         <h2>Besoin</h2>
 
                         <p class="fragment">Application Web</p>
@@ -696,7 +693,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="explication_cas_pratique">
                         <h2>Explication</h2>
 
                         <img id="as_400_proxy_web" src="assets/img/as_400_proxy_web.png" alt="as_400_proxy_web" />
@@ -716,12 +713,11 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="rafraichissement_proxy">
                         <h2>Rafraichissement du proxy</h2>
 
                         <pre class="fragment"><code class="hlsql">
-    CREATE FOREIGN TABLE f_ma_table (...)
-    SERVER remote OPTIONS (...);
+    CREATE FOREIGN TABLE f_ma_table (...) SERVER remote OPTIONS (...);
 
     CREATE MATERIALIZED VIEW m_ma_table AS
     SELECT ... FROM f_ma_table;
@@ -733,8 +729,7 @@
     END;
     $$ LANGUAGE 'plpgsql';
 
-    CREATE VIEW refresh_ma_table AS
-    SELECT refresh_view('m_ma_table') AS result;
+    CREATE VIEW refresh_ma_table AS SELECT refresh_view('m_ma_table');
                         </code></pre>
 
                         <aside class="notes">
@@ -757,7 +752,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="rafraichissement_web">
                         <h2>Refraichissement côté web</h2>
 
                         <p class="fragment">Deux vues matérialisées</p>
@@ -783,7 +778,7 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="complement1">
                         <h2>Complément (1/2)</h2>
 
                         <p class="fragment">Table de commande trop volumineuse</p>
@@ -799,21 +794,19 @@
                         </aside>
                     </section>
 
-                    <section>
+                    <section id="complement2">
                         <h2>Complément (2/2)</h2>
 
-                        <div id="complement2">
-                            <p class="fragment">Découpage en 2 vues (proxy) :</p>
-                            <ul>
-                                <li class="fragment">toutes les lignes</li>
-                                <li class="fragment">les "dernières" commandes</li>
-                            </ul>
-                            <p class="fragment">Récupération (web) :</p>
-                            <ul>
-                                <li class="fragment">historique une fois par jour</li>
-                                <li class="fragment">"light" toutes les 10 minutes</li>
-                            </ul>
-                        </div>
+                        <ul>
+                            <li class="fragment">Découpage en 2 vues (proxy) :</li>
+                            <li class="fragment">toutes les lignes</li>
+                            <li class="fragment">les "dernières" commandes</li>
+                        </ul>
+                        <ul>
+                            <li class="fragment">Récupération (web) :</li>
+                            <li class="fragment">historique : une fois par jour</li>
+                            <li class="fragment">"light" : toutes les 10 minutes</li>
+                        </ul>
                         <p class="fragment">Fusion dans une 3ème vue</p>
 
                         <aside class="notes">
@@ -840,7 +833,7 @@
 
                 </section>
 
-                <section>
+                <section id="merci">
                     <h1>Merci</h1>
 
                     <h2>Des questions ?</h2>
