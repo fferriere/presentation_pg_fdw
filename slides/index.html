@@ -689,14 +689,90 @@
                     <section>
                         <h2>Explication</h2>
 
-                        <p></p>
+                        <img id="as_400_proxy_web" src="assets/img/as_400_proxy_web.png" alt="as_400_proxy_web" />
+
+                        <aside class="notes">
+                            Nous avons donc les données qui sont stockées sur l'AS400.
+
+                            Nous avons aussi le serveur "proxy", va lui se connecter, via jdbc2_fdw, à l'AS400.
+                            Ce serveur ne sert que de passe-plat entre l'AS400 et le serveur pour le Web.
+                            Il permet de faire quelques conversions de données :
+                            les dates n'étaient pas stockées dans un format de date sur l'AS400
+                            ou les booléens étaient stockées comme des entiers, ...
+
+                            Enfin nous avons la base de données pour l'appli Web.
+                            Cette base de données va stocker des données qui lui sont propres.
+                            Elle va aussi se connecter au serveur PostgreSQL nommé "proxy".
+                        </aside>
                     </section>
 
                     <section>
-                        <h2>Explication</h2>
+                        <h2>Rafraichissement du proxy</h2>
 
-                        <img id="as_400_proxy_web" src="assets/img/as_400_proxy_web.png" alt="as_400_proxy_web" />
+                        <pre class="fragment"><code class="hlsql">
+    CREATE FOREIGN TABLE f_ma_table (...)
+    SERVER remote OPTIONS (...);
+
+    CREATE MATERIALIZED VIEW m_ma_table AS
+    SELECT ... FROM f_ma_table;
+
+    CREATE FUNCTION refresh_view(name) RETURNS INTEGER AS $$
+    BEGIN
+        EXECUTE format('REFRESH MATERIALIZED VIEW %s', name);
+        RETURN 1;
+    END;
+    $$ LANGUAGE 'plpgsql';
+
+    CREATE VIEW refresh_ma_table AS
+    SELECT refresh_view('m_ma_table') AS result;
+                        </code></pre>
+
+                        <aside class="notes">
+                            Nous avons besoin que nos données restent à jour.
+                            Nous avons vu que mettre à jour une vue matérialisée est très simple.
+                            Il suffit d'appeler la commande REFRESH MATERIALIZED VIEW.
+
+                            Comme nous avions quelques conversions entre l'AS400 et le "proxy",
+                            et pour éviter de garder la connexion avec l'AS400 trop longtemps,
+                            les données sont enregistrées dans des vues matérialisés.
+                            Cela nous permet aussi d'avoir des index personnalisés et
+                            d'améliorer les performances.
+
+                            J'ai mis en place l'appel du "refresh" au travers d'une fonction,
+                            appelée dans une vue.
+                            Cette vue pouvait être concidérée comme une table distante
+                            sur l'instance web.
+                            Avec cette technique, il est possible de gérer le rafraichissement
+                            des données, depuis l'instance web.
+                        </aside>
                     </section>
+
+                    <section>
+                        <h2>Refraichissement côté web</h2>
+
+                        <p class="fragment">Deux vues matérialisées</p>
+                        <p class="fragment">La première liée au "proxy"</p>
+                        <p class="fragment">La seconde liée à la première</p>
+
+                        <aside class="notes">
+                            A l'image du serveur "proxy",
+                            les tables distantes sont tamporisées dans des vues matérialisées.
+
+                            Le problème est que si le refraichissement d'une vue matérialisée
+                            verrouille son accès en lecture.
+                            Du coup si un utilisateur accède à une page web
+                            au moment où le refraichissement s'effectue,
+                            le chargement de la page va être très long.
+
+                            Du coup, pour réduire ce temps de verrouillage,
+                            j'ai mis en place deux vues matérialisées.
+                            La première vue récupére les données depuis le "proxy",
+                            la seconde à partir de la première vue.
+                            Le refraichissement de la seconde est très rapide
+                            car les données sont déjà en local.
+                        </aside>
+                    </section>
+
                 </section>
 
                 <section>
