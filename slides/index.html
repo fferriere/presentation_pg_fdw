@@ -207,7 +207,7 @@
                     </section>
 
                     <section>
-                        <h1>Évolution</h1>
+                        <h1>Évolution (1/2)</h1>
                         <div>
                             <p class="fragment"><strong>07/2009 : v8.4</strong> => Démarrage de l'implémentation du SQL/MED</p>
                             <p class="fragment"><strong>09/2011 : v9.1</strong> => Arrivée des "Foreign Tables"</p>
@@ -240,7 +240,7 @@
                     </section>
 
                     <section>
-                        <h1>Évolution</h1>
+                        <h1>Évolution (2/2)</h1>
 
                         <div>
                             <p class="fragment">
@@ -481,7 +481,6 @@
                             Nous avons une table country et une autre customer
                             ainsi que les sequence associée.
                         </aside>
-
                     </section>
 
                     <section>
@@ -563,7 +562,10 @@
      alpha3  | character(3)          |               |
      label   | character varying(64) |               |
     Server: remote
-    FDW Options: (schema_name 'public', table_name 'country', updatable 'false')
+    FDW Options: (
+        schema_name 'public',
+        table_name 'country',
+        updatable 'false')
                         </code></pre>
 
                         <aside class="notes">
@@ -607,6 +609,8 @@
     WITH NO DATA;
     CREATE INDEX m_customer_keys
         ON m_customer (id);
+                        </code></pre>
+                        <pre class="fragment"><code class="hlsql">
     REFRESH MATERIALIZED VIEW m_customer;
                         </code></pre>
 
@@ -618,6 +622,12 @@
                             Ce qui fait que l'on peut ajouter des index.
                             Le fait d'avoir une construction par requête permet
                             de spécialiser les informations pour notre besoin.
+
+                            L'option 'WITH NO DATA' est facultative,
+                            elle permet de créer une vue sans charger les données.
+
+                            Le rafraichissement des données d'une vue matérialisée
+                            se fait, simplement, avec la commande 'REFRESH MATERIALIZED VIEW'.
                         </aside>
                     </section>
 
