@@ -773,6 +773,61 @@
                         </aside>
                     </section>
 
+                    <section>
+                        <h2>Complément (1/2)</h2>
+
+                        <p class="fragment">Table de commande trop volumineuse</p>
+                        <p class="fragment">Durée de rafraichissement > 20 minutes</p>
+                        <p class="fragment">Besoin d'avoir des données de moins de 10 minutes</p>
+
+                        <aside class="notes">
+                            Certaines tables, comme les commandes,
+                            peuvent contenir un nombre important de données.
+                            Le rafraichissement pouvait prendre plusieurs dizaines de minutes.
+                            Il n'est pas concevable de rafraichir ces données toutes les 10 minutes.
+                            Il n'est malheureusement pas concevable que les données soient vieilles de plus de 10 minutes.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Complément (2/2)</h2>
+
+                        <div id="complement2">
+                            <p class="fragment">Découpage en 2 vues (proxy) :</p>
+                            <ul>
+                                <li class="fragment">toutes les lignes</li>
+                                <li class="fragment">les "dernières" commandes</li>
+                            </ul>
+                            <p class="fragment">Récupération (web) :</p>
+                            <ul>
+                                <li class="fragment">historique une fois par jour</li>
+                                <li class="fragment">"light" toutes les 10 minutes</li>
+                            </ul>
+                        </div>
+                        <p class="fragment">Fusion dans une 3ème vue</p>
+
+                        <aside class="notes">
+                            Du coup, il a fallu composer.
+
+                            Sur le proxy j'ai découpé la table (distante) des commandes en 2 parties.
+                            La première contient toutes les données,
+                            elle servira de base et d'historique.
+                            La seconde contient que les commandes de moins d'une semaine,
+                            ou qui ne sont pas expédiées.
+                            En gros, ce sont les commandes les plus importantes.
+
+                            Ensuite sur l'instance web, nous allons pouvoir recharger ces deux tables distinctement dans des vues matérialisées.
+                            La table d'historique est rafraichie tout les jours vers 2h du matin.
+                            La seconde table, qui du coup, est bien plus légère peux alors être raffraichie toutes les 10 minutes.
+
+                            Une fois ces deux tables raffraichies,
+                            une troisième (et dernière) vue matérialisée est créée.
+                            Elle fusionne les deux premières vues,
+                            ce qui fait que nous avons une table de commandes complète.
+                            Du coup, dans notre application nous n'avons qu'une seule table à gérer.
+                        </aside>
+                    </section>
+
                 </section>
 
                 <section>
