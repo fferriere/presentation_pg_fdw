@@ -101,8 +101,8 @@ s<!doctype html>
                         <h1>Fonctionnalités générales</h1>
 
                         <ul>
-                            <li class="fragment">SGBDR</li>
-                            <li class="fragment">Accessible : JDBC, pgsql</li>
+                            <li class="fragment">SGBDRO</li>
+                            <li class="fragment">Accessible : JDBC, pgsql, ...</li>
                             <li class="fragment">
                                 SQL Avancé :
                                 <ul>
@@ -173,7 +173,7 @@ s<!doctype html>
 
                         <div id="SGDB_fdw">
                             <p class="fragment">PostgreSQL</p>
-                            <p class="fragment">SGBD SQL courants : MySQL, Oracle, MSSQL, SQLite, ...</p>
+                            <p class="fragment">SGBD SQL courants : MySQL, Oracle, SQL Server, SQLite, ...</p>
                             <p class="fragment">Connecteurs SQL génériques : ODBC, JDBC</p>
                             <p class="fragment">NoSQL : MongoDB, Cassandra, Redis, ...</p>
                         </div>
@@ -324,6 +324,9 @@ s<!doctype html>
 
                 <section id="comment_ca_marche">
                     <h1>Comment ça marche ?</h1>
+
+                    <section>
+                    </section>
 
                     <section id="declaration_connexion">
                         <h2>Déclaration de la connexion</h2>
@@ -558,7 +561,7 @@ s<!doctype html>
      alpha2  | character(2)          |               |
      alpha3  | character(3)          |               |
      label   | character varying(64) |               |
-    Server: remote
+    Server: server
     FDW Options: (
         schema_name 'public',
         table_name 'country',
@@ -600,7 +603,8 @@ s<!doctype html>
                     <h1>Vue matérialisée</h1>
 
                     <section id="creation_vue_materialisee">
-                        <pre><code class="hlsql">
+                        <p class="fragment">Mélange entre une vue et une table</p>
+                        <pre class="fragment"><code class="hlsql">
     CREATE MATERIALIZED VIEW m_customer AS
     SELECT id, lastname, firstname,
             date_part('year', age(birthday)) as age
@@ -717,7 +721,7 @@ s<!doctype html>
                         <h2>Rafraichissement du proxy</h2>
 
                         <pre class="fragment"><code class="hlsql">
-    CREATE FOREIGN TABLE f_ma_table (...) SERVER remote OPTIONS (...);
+    CREATE FOREIGN TABLE f_ma_table (...) SERVER server OPTIONS (...);
 
     CREATE MATERIALIZED VIEW m_ma_table AS
     SELECT ... FROM f_ma_table;
