@@ -473,17 +473,18 @@
                     <section id="tables_server">
                         <h2>Tables sur <i>server</i></h2>
 
-                        <pre><code class="hlsh">
+                        <pre class="result_sql">
+
     server=# \d
                     Liste des relations
      Schéma |       Nom       |   Type   | Propriétaire
     --------+-----------------+----------+--------------
-     public | country         | table    | docker
-     public | country_id_seq  | séquence | docker
-     public | customer        | table    | docker
-     public | customer_id_seq | séquence | docker
+     <strong>public | country         | table    | user</strong>
+     public | country_id_seq  | séquence | user
+     <strong>public | customer        | table    | user</strong>
+     public | customer_id_seq | séquence | user
     (4 lignes)
-                        </code></pre>
+                        </pre>
 
                         <aside class="notes">
                             Voici la liste des tables sur le serveur.
@@ -495,38 +496,40 @@
                     <section id="description_table_server">
                         <h2>Table sur le <i>server</i></h2>
 
-                        <pre><code class="hlsh">
+                        <pre class="result_sql">
+
     server=# \d country
-                  Table « public.country »
+                  <strong>Table « public.country »</strong>
      Colonne |         Type          | Modificateurs
     ---------+-----------------------+---------------
-     id      | integer               | non NULL
-     alpha2  | character(2)          | non NULL
-     alpha3  | character(3)          | non NULL
-     label   | character varying(64) | non NULL
+     <strong>id</strong>      | integer               | non NULL
+     <strong>alpha2</strong>  | character(2)          | non NULL
+     <strong>alpha3</strong>  | character(3)          | non NULL
+     <strong>label</strong>   | character varying(64) | non NULL
     Index :
         "country_pkey" PRIMARY KEY, btree (id)
-                        </code></pre>
+                        </pre>
                     </section>
 
                     <section id="select_table_server">
                         <h2>Table sur le <i>server</i></h2>
 
-                        <pre><code class="hlsh">
-    server=# SELECT count(id) FROM country;
+                        <pre class="result_sql">
+
+    server=# <strong>SELECT count(id) FROM country;</strong>
      count
     -------
-       241
+       <strong class="result">241</strong>
     (1 ligne)
 
-    server=# SELECT id, alpha2, alpha3, label
+    server=# <strong>SELECT id, alpha2, alpha3, label
             FROM public.country
-            WHERE alpha2 = 'FR';
+            WHERE alpha2 = 'FR';</strong>
      id | alpha2 | alpha3 | label
     ----+--------+--------+--------
-     75 | FR     | FRA    | France
+     <strong class="result">75 | FR     | FRA    | France</strong>
     (1 ligne)
-                        </code></pre>
+                        </pre>
 
                         <aside class="notes">
                             Nous pouvons voir qu'il y a des données.
@@ -536,15 +539,16 @@
                     <section id="tables_client">
                         <h2>Tables sur le <i>client</i></h2>
 
-                        <pre><code class="hlsh">
+                        <pre class="result_sql">
+
     client=# \d
                     Liste des relations
     Schéma |    Nom     |       Type       | Propriétaire
     --------+------------+------------------+--------------
-    public | f_country  | table distante   | docker
-    public | f_customer | table distante   | docker
-    public | m_customer | vue matérialisée | docker
-    public | u_country  | table distante   | docker
+    <strong>public | f_country  | table distante   | user</strong>
+    <strong>public | f_customer | table distante   | user</strong>
+    <strong class="result">public | m_customer | vue matérialisée | user</strong>
+    <strong>public | u_country  | table distante   | user</strong>
     (4 lignes)
                         </code></pre>
 
@@ -561,20 +565,21 @@
                     <section id="description_table_client">
                         <h2>Table sur le <i>client</i></h2>
 
-                        <pre><code class="hlsh">
+                        <pre class="result_sql">
+
     client=# \d f_country
-                  Table distante « public.f_country »
+                  <strong>Table distante « public.f_country »</strong>
      Colonne |         Type          | Modificateurs | Options FDW
     ---------+-----------------------+---------------+-------------
-     id      | integer               |               |
-     alpha2  | character(2)          |               |
-     alpha3  | character(3)          |               |
-     label   | character varying(64) |               |
-    Server: server
+     <strong>id</strong>      | integer               |               |
+     <strong>alpha2</strong>  | character(2)          |               |
+     <strong>alpha3</strong>  | character(3)          |               |
+     <strong>label</strong>   | character varying(64) |               |
+    Server: <strong class="result">server</strong>
     FDW Options: (
-        schema_name 'public',
+        <strong class="result">schema_name 'public',
         table_name 'country',
-        updatable 'false')
+        updatable 'false'</strong>)
                         </code></pre>
 
                         <aside class="notes">
@@ -586,21 +591,22 @@
                     <section id="select_table_client">
                         <h2>Table sur le <i>client</i></h2>
 
-                        <pre><code class="hlsh">
-    client=# SELECT count(id) FROM f_country;
+                        <pre class="result_sql">
+
+    client=# <strong>SELECT count(id) FROM f_country;</strong>
      count
     -------
-       241
+       <strong class="result">241</strong>
     (1 ligne)
 
-    client=# SELECT id, alpha2, alpha3, label
+    client=# <strong>SELECT id, alpha2, alpha3, label
             FROM public.f_country
-            WHERE alpha2 = 'FR';
+            WHERE alpha2 = 'FR';</strong>
      id | alpha2 | alpha3 | label
     ----+--------+--------+--------
-     75 | FR     | FRA    | France
+     <strong class="result">75 | FR     | FRA    | France</strong>
     (1 ligne)
-                        </code></pre>
+                        </pre>
 
                         <aside class="notes">
                             Nous pouvons voir qu'il y a les même données.
@@ -644,21 +650,22 @@
                     </section>
 
                     <section id="utilisation_vue_materialisee">
-                        <pre><code class="hlsh">
-    server=# SELECT id, lastname, firstname, birthday
-            FROM customer LIMIT 2;
-     id | lastname | firstname |  birthday
+                        <pre class="result_sql">
+
+    server=# <strong>SELECT id, lastname, firstname, birthday
+            FROM customer LIMIT 2;</strong>
+     id | lastname | firstname |  <span class="result">birthday</span>
     ----+----------+-----------+------------
-      1 | Potter   | Harry     | 1980-08-31
-      2 | Weasley  | Ron       | 1980-03-01
+      <strong class="result">1 | Potter   | Harry     | <span class="result">1980-08-31</span>
+      2 | Weasley  | Ron       | <span class="result">1980-03-01</span></strong>
     (2 lignes)
 
-    client=# SELECT id, lastname, firstname, age
-            FROM m_customer LIMIT 2;
-     id | lastname | firstname | age
+    client=# <strong>SELECT id, lastname, firstname, age
+            FROM m_customer LIMIT 2;</strong>
+     id | lastname | firstname | <span class="result">age</span>
     ----+----------+-----------+-----
-      1 | Potter   | Harry     |  35
-      2 | Weasley  | Ron       |  36
+      <strong class="result">1 | Potter   | Harry     |  <span class="result">35</span>
+      2 | Weasley  | Ron       |  <span class="result">36</span></strong>
     (2 lignes)
                         </code></pre>
 
@@ -766,7 +773,7 @@
                     </section>
 
                     <section id="rafraichissement_web">
-                        <h2>Refraichissement côté web</h2>
+                        <h2>Rafraichissement côté web</h2>
 
                         <p class="fragment">Deux vues matérialisées</p>
                         <p class="fragment">La première liée au "proxy"</p>

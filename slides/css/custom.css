@@ -94,3 +94,14 @@
 #complement2 h2 {
     margin-top: 50px;
 }
+
+.result_sql strong {
+    font-weight: 900;
+    color: red;
+}
+.result_sql strong.result {
+    color: blue;
+}
+.result_sql span.result {
+    color: green;
+}
