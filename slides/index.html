@@ -24,7 +24,7 @@
 		</script>
 	</head>
 	<body>
-		<div class="reveal">
+		<div class="reveal static">
 			<div class="slides">
 
                 <section id="title">
@@ -93,11 +93,11 @@
                     <section id="historique">
                         <h1>Historique</h1>
 
-                        <p class="fragment">1974 : Création d'Ingres</p>
-                        <p class="fragment">1985 : Refonte de zéro d'Ingres pour créer <i>postgres</i></p>
-                        <p class="fragment">1995 : Ajout des fonctionnalités SQL => Postgres 95</p>
-                        <p class="fragment">1996 : Renommage en PostgreSQL</p>
-                        <p class="fragment">2016 : Version 9.5</p>
+                        <p>1974 : Création d'Ingres</p>
+                        <p>1985 : Refonte de zéro d'Ingres pour créer <i>postgres</i></p>
+                        <p>1995 : Ajout des fonctionnalités SQL => Postgres 95</p>
+                        <p>1996 : Renommage en PostgreSQL</p>
+                        <p>2016 : Version 9.5</p>
 
                         <aside class="notes">
                             <ul>
@@ -117,20 +117,20 @@
                         <h1>Fonctionnalités générales</h1>
 
                         <ul>
-                            <li class="fragment">SGBDRO</li>
-                            <li class="fragment">Accessible : JDBC, pgsql, ...</li>
-                            <li class="fragment">
+                            <li>SGBDRO</li>
+                            <li>Accessible : JDBC, pgsql, ...</li>
+                            <li>
                                 SQL Avancé :
                                 <ul>
-                                    <li class="fragment">Triggers</li>
-                                    <li class="fragment">Common Table Expressions</li>
-                                    <li class="fragment">Vues et Vues matérialisées</li>
-                                    <li class="fragment">...</li>
+                                    <li>Triggers</li>
+                                    <li>Common Table Expressions</li>
+                                    <li>Vues et Vues matérialisées</li>
+                                    <li>...</li>
                                 </ul>
                             </li>
-                            <li class="fragment">PostGIS</li>
-                            <li class="fragment">...</li>
-                            <li class="fragment">Foreign Data Wrapper</li>
+                            <li>PostGIS</li>
+                            <li>...</li>
+                            <li>Foreign Data Wrapper</li>
                         </ul>
 
                         <aside class="notes">
@@ -160,14 +160,14 @@
                         <h1>Foreign Data Wrapper</h1>
                         <h2>Qu'est-ce que c'est ?</h2>
 
-                        <p class="fragment">Norme SQL/MED (Management of External Data)</p>
-                        <p class="fragment">Créée en 2003</p>
-                        <p id="creation_wrapper" class="fragment">
+                        <p>Norme SQL/MED (Management of External Data)</p>
+                        <p>Créée en 2003</p>
+                        <p id="creation_wrapper">
                             Création de wrapper :
                             <ul>
-                                <li class="fragment">Nativement en C</li>
-                                <li class="fragment">En python avec "Multicorn"</li>
-                                <li class="fragment">En ruby avec "Holycorn"</li>
+                                <li>Nativement en C</li>
+                                <li>En python avec "Multicorn"</li>
+                                <li>En ruby avec "Holycorn"</li>
                             </ul>
                         </p>
 
@@ -188,15 +188,15 @@
                         <h1>Quelques Wrappers</h1>
 
                         <div id="SGDB_fdw">
-                            <p class="fragment">PostgreSQL</p>
-                            <p class="fragment">SGBD SQL courants : MySQL, Oracle, SQL Server, SQLite, ...</p>
-                            <p class="fragment">Connecteurs SQL génériques : ODBC, JDBC</p>
-                            <p class="fragment">NoSQL : MongoDB, Cassandra, Redis, ...</p>
+                            <p>PostgreSQL</p>
+                            <p>SGBD SQL courants : MySQL, Oracle, SQL Server, SQLite, ...</p>
+                            <p>Connecteurs SQL génériques : ODBC, JDBC</p>
+                            <p>NoSQL : MongoDB, Cassandra, Redis, ...</p>
                         </div>
                         <div id="extra_fdw">
-                            <p class="fragment">CSV, XML, LDAP</p>
-                            <p class="fragment">Git, Logs, WWW, IMAP</p>
-                            <p class="fragment">Processus, Twitter, Docker, ...</p>
+                            <p>CSV, XML, LDAP</p>
+                            <p>Git, Logs, WWW, IMAP</p>
+                            <p>Processus, Twitter, Docker, ...</p>
                         </div>
 
                         <aside class="notes">
@@ -218,14 +218,14 @@
                     <section id="evolution1">
                         <h1>Évolution (1/2)</h1>
                         <div>
-                            <p class="fragment"><strong>07/2009 : v8.4</strong> => Démarrage de l'implémentation du SQL/MED</p>
-                            <p class="fragment"><strong>09/2011 : v9.1</strong> => Arrivée des "Foreign Tables"</p>
-                            <p class="fragment">
+                            <p><strong>07/2009 : v8.4</strong> => Démarrage de l'implémentation du SQL/MED</p>
+                            <p><strong>09/2011 : v9.1</strong> => Arrivée des "Foreign Tables"</p>
+                            <p>
                                 <strong>09/2013 : v9.3</strong><br />
                                 Ajout de l'écriture sur les Foreign Tables<br />
                                 Ajout du type json
                             </p>
-                            <p class="fragment">
+                            <p>
                                 <strong>10/2014 : v9.4</strong><br />
                                 Ajout des triggers sur les Foreign Tables<br />
                                 Ajout du type jsonb
@@ -252,12 +252,12 @@
                         <h1>Évolution (2/2)</h1>
 
                         <div>
-                            <p class="fragment">
+                            <p>
                                 <strong>01/2016 : v9.5</strong><br />
                                 IMPORT FOREIGN SCHEMA<br />
-                                <i>INSERT ... ON CONFLICT DO NOTHING<span class="fragment highlight-line-through">/UPDATE</span></i>
+                                <i>INSERT ... ON CONFLICT DO NOTHING<span class="highlight-line-through">/UPDATE</span></i>
                             </p>
-                            <p class="fragment">
+                            <p>
                                 <strong>T3/2016 : v9.6</strong><br />
                                 JOIN et SORT directement sur le serveur distant<br />
                                 UPDATE et DELETE avec une meilleure gestion des transactions<br />
@@ -290,9 +290,6 @@
 
                 <section id="cas_utilisation">
                     <h1>Cas d'utilisation</h1>
-
-                    <section id="vide">
-                    </section>
 
                     <section id="decentralisation">
                         <h2>Décentralisation</h2>
@@ -340,9 +337,6 @@
 
                 <section id="comment_ca_marche">
                     <h1>Comment ça marche ?</h1>
-
-                    <section>
-                    </section>
 
                     <section id="declaration_connexion">
                         <h2>Déclaration de la connexion</h2>
@@ -634,8 +628,8 @@
                     <h1>Vue matérialisée</h1>
 
                     <section id="creation_vue_materialisee">
-                        <p class="fragment">Mélange entre une vue et une table</p>
-                        <pre class="fragment"><code class="hlsql">
+                        <p>Mélange entre une vue et une table</p>
+                        <pre><code class="hlsql">
     CREATE MATERIALIZED VIEW m_customer AS
     SELECT id, lastname, firstname,
             date_part('year', age(birthday)) as age
@@ -644,7 +638,7 @@
     CREATE INDEX m_customer_keys
         ON m_customer (id);
                         </code></pre>
-                        <pre class="fragment"><code class="hlsql">
+                        <pre><code class="hlsql">
     REFRESH MATERIALIZED VIEW m_customer;
                         </code></pre>
 
@@ -699,13 +693,13 @@
                     <section id="besoin">
                         <h2>Besoin</h2>
 
-                        <p class="fragment">Application Web</p>
-                        <p class="fragment">IBM AS400/DB2</p>
-                        <p class="fragment">
-                            <span class="fragment highlight-line-through">Driver PHP</span>
+                        <p>Application Web</p>
+                        <p>IBM AS400/DB2</p>
+                        <p>
+                            <span class="highlight-line-through">Driver PHP</span>
                         </p>
-                        <p class="fragment">JDBC</p>
-                        <p class="fragment">jdbc2_fdw</p>
+                        <p>JDBC</p>
+                        <p>jdbc2_fdw</p>
 
                         <aside class="notes">
                             Je vais maintenant vous parler du cas pratique que j'ai pu mettre en place.
@@ -752,7 +746,7 @@
                     <section id="rafraichissement_proxy">
                         <h2>Rafraichissement du proxy</h2>
 
-                        <pre class="fragment"><code class="hlsql">
+                        <pre><code class="hlsql">
     CREATE FOREIGN TABLE f_ma_table (...) SERVER server OPTIONS (...);
 
     CREATE MATERIALIZED VIEW m_ma_table AS
@@ -791,9 +785,9 @@
                     <section id="rafraichissement_web">
                         <h2>Rafraichissement côté web</h2>
 
-                        <p class="fragment">Deux vues matérialisées</p>
-                        <p class="fragment">La première liée au "proxy"</p>
-                        <p class="fragment">La seconde liée à la première</p>
+                        <p>Deux vues matérialisées</p>
+                        <p>La première liée au "proxy"</p>
+                        <p>La seconde liée à la première</p>
 
                         <aside class="notes">
                             A l'image du serveur "proxy",
@@ -817,9 +811,9 @@
                     <section id="complement1">
                         <h2>Complément (1/2)</h2>
 
-                        <p class="fragment">Table de commande trop volumineuse</p>
-                        <p class="fragment">Durée de rafraichissement > 20 minutes</p>
-                        <p class="fragment">Besoin d'avoir des données de moins de 10 minutes</p>
+                        <p>Table de commande trop volumineuse</p>
+                        <p>Durée de rafraichissement > 20 minutes</p>
+                        <p>Besoin d'avoir des données de moins de 10 minutes</p>
 
                         <aside class="notes">
                             Certaines tables, comme les commandes,
@@ -834,16 +828,16 @@
                         <h2>Complément (2/2)</h2>
 
                         <ul>
-                            <li class="fragment">Découpage en 2 vues (proxy) :</li>
-                            <li class="fragment">toutes les lignes</li>
-                            <li class="fragment">les "dernières" commandes</li>
+                            <li>Découpage en 2 vues (proxy) :</li>
+                            <li>toutes les lignes</li>
+                            <li>les "dernières" commandes</li>
                         </ul>
                         <ul>
-                            <li class="fragment">Récupération (web) :</li>
-                            <li class="fragment">historique : une fois par jour</li>
-                            <li class="fragment">"light" : toutes les 10 minutes</li>
+                            <li>Récupération (web) :</li>
+                            <li>historique : une fois par jour</li>
+                            <li>"light" : toutes les 10 minutes</li>
                         </ul>
-                        <p class="fragment">Fusion dans une 3ème vue</p>
+                        <p>Fusion dans une 3ème vue</p>
 
                         <aside class="notes">
                             Du coup, il a fallu composer.

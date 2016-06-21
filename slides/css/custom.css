@@ -114,3 +114,7 @@
     border-color: white;
     background-color: white;
 }
+
+.static .highlight-line-through {
+    text-decoration: line-through;
+}
