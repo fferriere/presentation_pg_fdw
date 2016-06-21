@@ -105,3 +105,12 @@
 .result_sql span.result {
     color: green;
 }
+
+#remerciements_afup_lyon h1 {
+    color: white;
+    font-size: 5em;
+}
+#logo_afup_lyon {
+    border-color: white;
+    background-color: white;
+}
