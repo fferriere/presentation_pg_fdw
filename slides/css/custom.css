@@ -60,7 +60,9 @@
     margin-bottom: 50px;
 }
 
-#pic-decentralisation, #pic-cqrs-es {
+#pic-decentralisation,
+#pic-cqrs-es,
+#pic-decentralisation-exemple {
     height: 8em;
 }
 #cqrs_es_multiple {
