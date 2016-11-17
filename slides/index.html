@@ -1,31 +1,31 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Foreign Data Wrapper sous PostgreSQL</title>
+        <title>Foreign Data Wrapper sous PostgreSQL</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/white.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white.css">
 
-		<link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="css/custom.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/idea.css">
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/idea.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
 
 
                 <section id="title">
@@ -36,28 +36,28 @@
 
 
                 <section id="qui-suis-je">
-                	<h1>Qui suis-je ?</h1>
+                    <h1>Qui suis-je ?</h1>
 
-                	<div class="flex-row">
-                		<div>
-                			<img id="avatar" class="clean-image" src="./assets/img/my-disk-world.png" alt="avatar" />
-                		</div>
-                		<div class="flex-element-centered">
-                			<div class="name">Florian FERRIERE</div>
-                			<div class="twitter">
-                				<a href="https://twitter.com/FerriereFlorian">@FerriereFlorian</a>
-                			</div>
-                		</div>
-                	</div>
+                    <div class="flex-row">
+                        <div>
+                            <img id="avatar" class="clean-image" src="./assets/img/my-disk-world.png" alt="avatar" />
+                        </div>
+                        <div class="flex-element-centered">
+                            <div class="name">Florian FERRIERE</div>
+                            <div class="twitter">
+                                <a href="https://twitter.com/FerriereFlorian">@FerriereFlorian</a>
+                            </div>
+                        </div>
+                    </div>
 
-                	<div>
-                		<div>
-                			Développeur chez Norsys
-                		</div>
-                		<div>
-                			<img id="logo-norsys" src="./assets/img/norsys.png" alt="norsys" />
-                		</div>
-                	</div>
+                    <div>
+                        <div>
+                            Développeur chez Norsys
+                        </div>
+                        <div>
+                            <img id="logo-norsys" src="./assets/img/norsys.png" alt="norsys" />
+                        </div>
+                    </div>
                 </section>
 
                 <section id="pg_en_3_mots">
@@ -71,6 +71,11 @@
                             <h1>
                                 PostgreSQL
                             </h1>
+
+                            <aside class="notes">
+                                Avant de parler des Foreign Data Wrapper,
+                                je vais rapidement vous parler des PostgreSQL.
+                            </aside>
                         </div>
                     </section>
 
@@ -84,6 +89,7 @@
                         <p class="fragment">2016 : Version 9.6</p>
 
                         <aside class="notes">
+                            Bref historique :
                             <ul>
                                 <li>PostgreSQL est une base de données dont les origines commencent en 1974
                                     avec la création d'Ingres par Michael Stonebraker.</li>
@@ -118,6 +124,7 @@
                         </ul>
 
                         <aside class="notes">
+                            Fonctionnalités générales :
                             <ul>
                                 <li>Server de Gestion de Base de Données Relationnel Objet</li>
                                 <li>
@@ -163,7 +170,7 @@
                             Il est possible de créer son propre wrapper en C en utilisant
                             les fonctions prévues à cet effet.
                             Des extensions comme "Multicorn" en python ou "Holycorn" en ruby
-                            ont été crées pour facilité la création de wrapper.
+                            apporte un lot de wrapper et permet de la créer des wrappers plus facilement.
                             Grace à ça, il existe, à ce jour, un nombre important de wrapper.
                         </aside>
                     </section>
@@ -184,6 +191,7 @@
                         </div>
 
                         <aside class="notes">
+                            Voici une liste non exhaustive :
                             <ul>
                                 <li>Forcément nous avons la possibilité de connecté un serveur PostgreSQL avec un autre.</li>
                                 <li>Mais également avec d'autres SGBD.</li>
@@ -206,13 +214,11 @@
                             <p class="fragment"><strong>09/2011 : v9.1</strong> => Arrivée des "Foreign Tables"</p>
                             <p class="fragment">
                                 <strong>09/2013 : v9.3</strong><br />
-                                Ajout de l'écriture sur les Foreign Tables<br />
-                                Ajout du type json
+                                Ajout de l'écriture sur les Foreign Tables
                             </p>
                             <p class="fragment">
                                 <strong>10/2014 : v9.4</strong><br />
-                                Ajout des triggers sur les Foreign Tables<br />
-                                Ajout du type jsonb
+                                Ajout des triggers sur les Foreign Tables
                             </p>
                         </div>
 
@@ -220,14 +226,8 @@
                             <ul>
                                 <li>C'est en Juillet 2009 que nous avons pu voir arriver l'implémentation du SQL/MED. Les prémices du FDW ont commencés</li>
                                 <li>Septembre 2011 sont arrivés les Foreign Tables. Fondement pour l'utilisation de SGBD distant.</li>
-                                <li>
-                                    Depuis Septembre 2013 nous avons la possibilité d'écrire sur les tables distantes.
-                                    Une autre nouveauté, que je trouve importante, est l'arrivé du type json.
-                                </li>
-                                <li>
-                                    En Octobre 2014, les triggers sur les tables distantes ont été ajoutés au panel des fonctionnalités.
-                                    Ainsi que le type jsonb, ce type est, cette fois, indexable, contrairement au json.
-                                </li>
+                                <li>Depuis Septembre 2013 nous avons la possibilité d'écrire sur les tables distantes.</li>
+                                <li>En Octobre 2014, les triggers sur les tables distantes ont été ajoutés au panel des fonctionnalités.</li>
                             </ul>
                         </aside>
                     </section>
@@ -245,7 +245,7 @@
                                 <strong>09/2016 : v9.6</strong><br />
                                 JOIN et SORT directement sur le serveur distant<br />
                                 De même pour les UPDATE et les DELETE<br />
-																Exécution d'opérateurs et de fonction sur le serveur distant<br />
+                                Exécution d'opérateurs et de fonction sur le serveur distant<br />
                                 Possibilité d'annuler une requête distante
                             </p>
                         </div>
@@ -264,7 +264,7 @@
                                     <ul>
                                         <li>une amélioration pour faire le JOIN et le SORT directement sur le serveur distant</li>
                                         <li>l'amélioration de la gestion des UPDATE et les DELETE à distance (<a href="https://www.depesz.com/2016/03/22/waiting-for-9-6-directly-modify-foreign-tables/" target="_blank">lien</a>)</li>
-																				<li>possibilité d'éxécuter, côté serveur distant, des opérateurs et fonctions (<a href="http://paquier.xyz/postgresql-2/postgres-9-6-feature-highlight-pushdown-improvements-postgres-fdw/" target="_blank">lien</a>)</li>
+                                        <li>possibilité d'éxécuter, côté serveur distant, des opérateurs et fonctions (<a href="http://paquier.xyz/postgresql-2/postgres-9-6-feature-highlight-pushdown-improvements-postgres-fdw/" target="_blank">lien</a>)</li>
                                         <li>la possibilité d'annuler une requête distante</li>
                                     </ul>
                                 </li>
@@ -286,40 +286,10 @@
                         <img id="pic-decentralisation" class="clean-image" src="assets/img/decentralisation.png" alt="décentralisation" />
 
                         <aside class="notes">
-                            Le premier cas d'utilisation qui m'est venu en tête et que j'ai pu mettre en pratique,
+                            Voici un cas d'utilisation qui m'est venu en tête et que j'ai pu mettre en pratique,
                             est une utilisation décentraliser. Nous avons deux serveurs de bases de données.
                             Le premier contient la totalité des données.
                             Le second tout ou partie de ces données pour les rendre accessible à un serveur web.
-                        </aside>
-                    </section>
-
-                    <section id="cqrs_es">
-                        <h2>CQRS/ES</h2>
-
-                        <img id="pic-cqrs-es" class="clean-image" src="assets/img/cqrs_es.png" alt="CQRS/ES" />
-
-                        <aside class="notes">
-                            Nous pouvons imaginer utiliser le FDW avec le CQRS/ES.
-                            Nous partons sur le même principe que le cas précédent
-                            mais les données sources sont enregistrés sous le type d'événement.
-                            Le type json(b) pourra ici nous être très utile.
-                        </aside>
-                    </section>
-
-                    <section id="cqrs_es_multiple">
-                        <h2>CQRS/ES Multiple</h2>
-
-                        <img id="pic-cqrs-es-multiple" class="clean-image" src="assets/img/cqrs_es_multiple.png" alt="CQRS/ES" />
-
-                        <aside class="notes">
-                            Ce cas n'est autre qu'un dérivé du précédent.
-                            Par contre, là avons une séparation par métier.
-                            Cela permet d'avoir une base commune (l'event store)
-                            et les autres bases qui elles seront utilisées
-                            par les applications qui pourront être hébergées dans des endroits différents.
-
-                            Il est tout à fait possible d'avoir ce côté, multi-serveur avec des tables standards
-                            comme dans le cas "décentralisé".
                         </aside>
                     </section>
                 </section>
@@ -861,26 +831,26 @@
                     <h2>Des questions ?</h2>
                 </section>
 
-			</div>
-		</div>
+            </div>
+        </div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
 
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				history: true,
+        <script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
                 slideNumber: 'c/t',
 
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ]
+            });
+        </script>
+    </body>
 </html>
