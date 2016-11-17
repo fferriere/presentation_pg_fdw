@@ -81,7 +81,7 @@
                         <p class="fragment">1985 : Refonte de zéro d'Ingres pour créer <i>postgres</i></p>
                         <p class="fragment">1995 : Ajout des fonctionnalités SQL => Postgres 95</p>
                         <p class="fragment">1996 : Renommage en PostgreSQL</p>
-                        <p class="fragment">2016 : Version 9.5</p>
+                        <p class="fragment">2016 : Version 9.6</p>
 
                         <aside class="notes">
                             <ul>
@@ -92,7 +92,7 @@
                                 <li>Un tournant important arrive en 1995 avec l'ajout des fonctionnalités liés au SQL.
                                     Le projet fut alors renommé "Postgres 95"</li>
                                 <li>1 an plus tard, il devient alors "PostgreSQL".</li>
-                                <li>Beaucoup de travaux plus tard ont pu donner la version 9.5 dernière version stable à ce jour.</li>
+                                <li>Beaucoup de travaux plus tard ont pu donner la version 9.6 dernière version stable à ce jour.</li>
                             </ul>
                         </aside>
                     </section>
@@ -180,7 +180,7 @@
                         <div id="extra_fdw">
                             <p class="fragment">CSV, XML, LDAP</p>
                             <p class="fragment">Git, Logs, WWW, IMAP</p>
-                            <p class="fragment">Processus, Twitter, Docker, ...</p>
+                            <p class="fragment">Processus, Twitter, Docker, RabbitMQ, ...</p>
                         </div>
 
                         <aside class="notes">
@@ -242,9 +242,10 @@
                                 <i>INSERT ... ON CONFLICT DO NOTHING<span class="fragment highlight-line-through">/UPDATE</span></i>
                             </p>
                             <p class="fragment">
-                                <strong>T3/2016 : v9.6</strong><br />
+                                <strong>09/2016 : v9.6</strong><br />
                                 JOIN et SORT directement sur le serveur distant<br />
-                                UPDATE et DELETE avec une meilleure gestion des transactions<br />
+                                De même pour les UPDATE et les DELETE<br />
+																Exécution d'opérateurs et de fonction sur le serveur distant<br />
                                 Possibilité d'annuler une requête distante
                             </p>
                         </div>
@@ -259,10 +260,11 @@
                                     La commande est aussi disponible sur les tables distantes mais uniquement avec le NOTHING.
                                 </li>
                                 <li>
-                                    La prochaine version est prévue pour le troisième trimestre et apportera :
+                                    La dernière version est sortie en septembre 2016, elle apporte (<a href="https://wiki.postgresql.org/wiki/NewIn96#postgres_fdw" target="_blank">NewIn96</a>) :
                                     <ul>
                                         <li>une amélioration pour faire le JOIN et le SORT directement sur le serveur distant</li>
-                                        <li>l'amélioration de la gestion des transactions pour les UPDATE et les DELETE</li>
+                                        <li>l'amélioration de la gestion des UPDATE et les DELETE à distance (<a href="https://www.depesz.com/2016/03/22/waiting-for-9-6-directly-modify-foreign-tables/" target="_blank">lien</a>)</li>
+																				<li>possibilité d'éxécuter, côté serveur distant, des opérateurs et fonctions (<a href="http://paquier.xyz/postgresql-2/postgres-9-6-feature-highlight-pushdown-improvements-postgres-fdw/" target="_blank">lien</a>)</li>
                                         <li>la possibilité d'annuler une requête distante</li>
                                     </ul>
                                 </li>
