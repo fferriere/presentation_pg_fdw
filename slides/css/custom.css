@@ -105,3 +105,21 @@
 .result_sql span.result {
     color: green;
 }
+
+#git_fdw_presentation h2 {
+    margin-top: 70px;
+}
+
+#git_fdw_result h2 {
+    margin-top: 50px;
+}
+
+#git_fdw_result pre {
+    float: left;
+    width: 45%;
+    margin: 0 2.5%;
+}
+
+#git_fdw_chart h2 {
+    margin-top: 50px;
+}

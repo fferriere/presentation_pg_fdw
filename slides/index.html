@@ -825,6 +825,136 @@
 
                 </section>
 
+                <section id="git_fdw">
+                    <h1>Git FDW</h1>
+
+                    <section id="git_fdw_presentation">
+                        <h2>Création</h2>
+                        <pre class="fragment"><code class="hlsql">CREATE EXTENSION multicorn;
+
+CREATE SERVER git_server
+    FOREIGN DATA WRAPPER multicorn
+    OPTIONS (
+        wrapper 'multicorn.gitfdw.GitFdw'
+    );</code></pre>
+                        <pre class="fragment"><code class="hlsql">CREATE FOREIGN TABLE git_atoum (
+    author_name VARCHAR(128),
+    author_email VARCHAR(128),
+    message TEXT,
+    hash VARCHAR(128),
+    date TIMESTAMP
+)
+SERVER git_server
+OPTIONS (
+    path '/opt/atoum'
+);</code></pre>
+
+                        <aside class="notes">
+                            Nous allons voir rapidement comment utiliser le FDW pour git.
+                            Il y a deux extensions pour GIT une en C et un composant compris dans multicorn.
+
+                            J'aurai préféré utiliser l'extension en C
+                            mais la compilation n'a pas fonctionnée.
+
+                            Je me suis donc rabattu sur l'extension multicorn.
+                            Sont installation est décrite dans le <a href="../../../git_fdw/README.md" target="_blank">README</a> que j'ai utilisé pour tester.
+
+                            Une fois l'installation faite, la configuration est très simple.
+                            Comme on l'a déjà vu tout à l'heure : on crée l'extension.
+                            Puis le serveur.
+
+                            Ensuite il suffit de créer la table distante avec les bonnes options.
+                        </aside>
+                    </section>
+
+                    <section id="git_fdw_select">
+                        <h2>SELECT</h2>
+                        <pre><code class="hlsql">SELECT to_char(date, 'YYYY-TQ') AS quarter,
+        COUNT(*) as nb_commit
+FROM git_atoum
+GROUP BY to_char(date, 'YYYY-TQ')
+ORDER BY quarter ASC;</code></pre>
+
+                        <aside class="notes">
+                            Voici un exemple de requête SQL que nous pouvons faire.
+                        </aside>
+                    </section>
+
+                    <section id="git_fdw_result">
+                        <h2>Résultat</h2>
+                        <pre> quarter | nb_commit
+---------+-----------
+ 2010-T2 |        25
+ 2010-T3 |        64
+ 2010-T4 |       108
+ 2011-T1 |       144
+ 2011-T2 |       199
+ 2011-T3 |       230
+ 2011-T4 |       174
+ 2012-T1 |        89
+ 2012-T2 |       137
+ 2012-T3 |       150
+ 2012-T4 |       184
+ 2013-T1 |       215
+ 2013-T2 |       234
+ 2013-T3 |       119
+ 2013-T4 |       217</pre>
+                        <pre> quarter | nb_commit
+---------+-----------
+ 2014-T1 |       108
+ 2014-T2 |        29
+ 2014-T3 |        26
+ 2014-T4 |       110
+ 2015-T1 |        58
+ 2015-T2 |        46
+ 2015-T3 |        65
+ 2015-T4 |        75
+ 2016-T1 |        85
+ 2016-T2 |        27
+ 2016-T3 |        43
+ 2016-T4 |         7
+ (27 rows)
+
+Time: 63.959 ms</pre>
+
+                        <aside class="notes">
+                            Le résultat est rapide et simple à optenir.
+
+                            Ce résultat serai bien plus compliqué à obtenir en ligne de commande, mais sûrement pas impossible.
+                        </aside>
+                    </section>
+
+                    <section id="git_fdw_select_in_json">
+                        <h2>Graph (requête)</h2>
+                        <pre><code class="hlsql">SELECT to_json(t)
+FROM (
+    SELECT  array_agg(data.quarter) AS labels,
+            array_agg(data.nb_commit) AS data
+    FROM (
+        SELECT to_char(date, 'YYYY-TQ') AS quarter,
+                COUNT(*) as nb_commit
+        FROM git_atoum
+        GROUP BY to_char(date, 'YYYY-TQ')
+        ORDER BY quarter ASC
+    ) AS data
+) AS t;</code></pre>
+
+                        <aside class="notes">
+                            En associant la requête précédente avec le module JSON de PostgreSQL,
+                            nous pouvons obtenir un résultat en JSON utilisable directement (ou presque).
+                        </aside>
+                    </section>
+
+                    <section id="git_fdw_chart">
+                        <h2>Graph (resultat)</h2>
+                        <iframe src="./git-fdw.chart.html" style="width: 100%; min-height: 450px;" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+                        <aside class="notes">
+                            Voici comment on peut utiliser le résultat en JSON assez facilement pour avoir un graph.
+                        </aside>
+                    </section>
+                </section>
+
                 <section id="merci">
                     <h1>Merci</h1>
 
@@ -842,6 +972,8 @@
             Reveal.initialize({
                 history: true,
                 slideNumber: 'c/t',
+                center: true,
+                mouseWheel: true,
 
                 // More info https://github.com/hakimel/reveal.js#dependencies
                 dependencies: [
