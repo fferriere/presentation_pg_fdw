@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>Chart Git FDW</title>
+        <script src="./Chart.js/Chart.bundle.js"></script>
+        <script src="./Chart.js/samples/utils.js"></script>
+        <style>
+            canvas {
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <canvas id="canvas"><canvas>
+        </div>
+        <script>
+            window.onload = function() {
+                var ctx = document.getElementById('canvas');
+                var color = Chart.helpers.color;
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["2010-T2","2010-T3","2010-T4","2011-T1","2011-T2","2011-T3","2011-T4","2012-T1","2012-T2","2012-T3","2012-T4","2013-T1","2013-T2","2013-T3","2013-T4","2014-T1","2014-T2","2014-T3","2014-T4","2015-T1","2015-T2","2015-T3","2015-T4","2016-T1","2016-T2","2016-T3","2016-T4"],
+                        datasets: [
+                            {
+                                data: [25,64,108,144,199,230,174,89,137,150,184,215,234,119,217,108,29,26,110,58,46,65,75,85,27,43,7],
+                                label: "Nombre de commits par trimestre",
+                                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                                borderColor: window.chartColors.red,
+                                borderWidth: 1,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
