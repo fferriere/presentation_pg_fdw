@@ -646,7 +646,6 @@
                 </section>
 
                 <section>
-
                     <section>
                         <h1>Problème 1</h1>
 
@@ -691,7 +690,43 @@
         ON t_customer (id);
                         </code></pre>
                     </section>
+                </section>
 
+                <section>
+                    <section>
+                        <h1>Problème 2</h1>
+
+                        <p>Comment rafraichir réguliairement des données très volumineuses ?</p>
+
+                        <aside class="notes">
+                            Il est possible que nous ayons besoin de récupérer
+                            des tables très volumineuse,
+                            et de vouloir parcourir toutes ces données.
+
+                            Le problème est que le rappatriement des données peux prendre très longtemps.
+                            Exemple : il est compliqué d'avoir des données à jour toutes les 10 minutes
+                            si elles mettent 20 minutes à être récupérées.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h1>Solution 2</h1>
+
+                        <p class="fragment">Découpage en 2 vues :</p>
+                        <p class="fragment">Une première qui contient toutes les données</p>
+                        <p class="fragment">Une seconde qui contient qu'un fragment des données</p>
+
+                        <p id="troisieme_vue" class="fragment">Une 3ème vue qui JOIN le tout</p>
+
+                        <aside class="notes">
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h1>Solution 2</h1>
+
+                        <img id="pic-big-data" class="clean-image" alt="big_data" src="./assets/img/big_data.png" />
+                    </section>
                 </section>
 
                 <section id="git_fdw">

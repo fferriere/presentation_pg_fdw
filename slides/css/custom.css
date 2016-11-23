@@ -118,6 +118,15 @@
     height: 12em;
 }
 
+#troisieme_vue {
+    margin-top: 70px;
+}
+
+#pic-big-data {
+    height: 14em;
+    margin: 0;
+}
+
 #git_fdw_presentation h2 {
     margin-top: 70px;
 }
