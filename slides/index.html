@@ -732,26 +732,20 @@
                 <section id="git_fdw">
                     <h1>Git FDW</h1>
 
+                    <section>
+                    </section>
+
                     <section id="git_fdw_presentation">
-                        <h2>Création</h2>
-                        <pre class="fragment"><code class="hlsql">    CREATE EXTENSION multicorn;
+                        <h2>Déclaration du serveur</h2>
+                        <pre><code class="hlsql">
+    CREATE EXTENSION multicorn;
 
     CREATE SERVER git_server
         FOREIGN DATA WRAPPER multicorn
         OPTIONS (
             wrapper 'multicorn.gitfdw.GitFdw'
-        );</code></pre>
-                        <pre class="fragment"><code class="hlsql">    CREATE FOREIGN TABLE git_atoum (
-        author_name VARCHAR(128),
-        author_email VARCHAR(128),
-        message TEXT,
-        hash VARCHAR(128),
-        date TIMESTAMP
-    )
-    SERVER git_server
-    OPTIONS (
-        path '/opt/atoum'
-    );</code></pre>
+        );
+                        </code></pre>
 
                         <aside class="notes">
                             Nous allons voir rapidement comment utiliser le FDW pour git.
@@ -766,7 +760,26 @@
                             Une fois l'installation faite, la configuration est très simple.
                             Comme on l'a déjà vu tout à l'heure : on crée l'extension.
                             Puis le serveur.
+                        </aside>
+                    </section>
 
+                    <section>
+                        <h2>Déclaration de la table</h2>
+                        <pre><code class="hlsql">
+    CREATE FOREIGN TABLE git_atoum (
+        author_name VARCHAR(128),
+        author_email VARCHAR(128),
+        message TEXT,
+        hash VARCHAR(128),
+        date TIMESTAMP
+    )
+    SERVER git_server
+    OPTIONS (
+        path '/opt/atoum'
+    );
+                        </code></pre>
+
+                        <aside class="notes">
                             Ensuite il suffit de créer la table distante avec les bonnes options.
                         </aside>
                     </section>
