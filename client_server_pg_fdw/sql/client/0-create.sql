@@ -32,19 +32,27 @@ CREATE FOREIGN TABLE f_customer (
     id INTEGER,
     lastname VARCHAR,
     firstname VARCHAR,
-    birthday DATE
+    birthdate DATE
 )
 SERVER remote
 OPTIONS (table_name 'customer');
 
 CREATE MATERIALIZED VIEW m_customer AS
 SELECT id, lastname, firstname,
-        date_part('year', age(birthday)) as age
+        date_part('year', age(birthdate)) as age
 FROM f_customer
 WITH NO DATA;
 CREATE INDEX m_customer_keys
     ON m_customer (id);
 REFRESH MATERIALIZED VIEW m_customer;
+
+CREATE MATERIALIZED VIEW t_customer AS
+SELECT * FROM m_customer
+WITH NO DATA;
+CREATE INDEX t_customer_keys
+    ON t_customer (id);
+
+REFRESH MATERIALIZED VIEW t_customer;
 
 -- Foreign Schema
 
@@ -53,4 +61,3 @@ CREATE SCHEMA remote_schema;
 IMPORT FOREIGN SCHEMA public
 FROM SERVER remote
 INTO remote_schema;
-

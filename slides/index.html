@@ -280,10 +280,10 @@
                     <section id="vide">
                     </section>
 
-                    <section id="decentralisation">
-                        <h2>Décentralisation</h2>
+                    <section id="client-server">
+                        <h2>Client/Server</h2>
 
-                        <img id="pic-decentralisation" class="clean-image" src="assets/img/decentralisation.png" alt="décentralisation" />
+                        <img id="pic-databases" class="clean-image" src="assets/img/databases.png" alt="databases" />
 
                         <aside class="notes">
                             Voici un cas d'utilisation qui m'est venu en tête et que j'ai pu mettre en pratique,
@@ -415,22 +415,11 @@
 
                     <section id="exemple_presentation">
 
-                        <p>
+                        <p id="project-link">
                             <a href="https://github.com/fferriere/20160622_presentation_pg_fdw">Projet Github</a>
                         </p>
 
-                        <img id="pic-decentralisation-exemple" class="clean-image" src="assets/img/decentralisation.png" alt="décentralisation" />
-
-                        <table>
-                            <tr>
-                                <td>
-                                    <i>Server</i> = "Base principale"
-                                </td>
-                                <td>
-                                    <i>Client</i> = "Web DB"
-                                </td>
-                            </tr>
-                        </table>
+                        <img id="pic-databases-exemple" class="clean-image" src="assets/img/databases.png" alt="databases" />
 
                         <aside class="notes">
                             J'ai créer un projet avec 2 conteneurs docker
@@ -520,8 +509,9 @@
     <strong>public | f_country  | table distante   | user</strong>
     <strong>public | f_customer | table distante   | user</strong>
     <strong class="result">public | m_customer | vue matérialisée | user</strong>
+    <strong class="result">public | t_customer | vue matérialisée | user</strong>
     <strong>public | u_country  | table distante   | user</strong>
-    (4 lignes)
+    (5 lignes)
                         </code></pre>
 
                         <aside class="notes">
@@ -594,7 +584,7 @@
                         <pre class="fragment"><code class="hlsql">
     CREATE MATERIALIZED VIEW m_customer AS
     SELECT id, lastname, firstname,
-            date_part('year', age(birthday)) as age
+            date_part('year', age(birthdate)) as age
     FROM f_customer
     WITH NO DATA;
     CREATE INDEX m_customer_keys
@@ -624,9 +614,9 @@
                     <section id="utilisation_vue_materialisee">
                         <pre class="result_sql">
 
-    server=# <strong>SELECT id, lastname, firstname, birthday
+    server=# <strong>SELECT id, lastname, firstname, birthdate
             FROM customer LIMIT 2;</strong>
-     id | lastname | firstname |  <span class="result">birthday</span>
+     id | lastname | firstname |  <span class="result">birthdate</span>
     ----+----------+-----------+------------
       <strong class="result">1 | Potter   | Harry     | <span class="result">1980-08-31</span>
       2 | Weasley  | Ron       | <span class="result">1980-03-01</span></strong>
@@ -636,7 +626,7 @@
             FROM m_customer LIMIT 2;</strong>
      id | lastname | firstname | <span class="result">age</span>
     ----+----------+-----------+-----
-      <strong class="result">1 | Potter   | Harry     |  <span class="result">35</span>
+      <strong class="result">1 | Potter   | Harry     |  <span class="result">36</span>
       2 | Weasley  | Ron       |  <span class="result">36</span></strong>
     (2 lignes)
                         </code></pre>
@@ -649,183 +639,54 @@
                     </section>
                 </section>
 
-<!--
-                <section id="cas_pratique">
-                    <h1>Cas pratique</h1>
+                <section>
 
-                    <section id="besoin">
-                        <h2>Besoin</h2>
+                    <section>
+                        <h1>Problème 1</h1>
 
-                        <p class="fragment">Application Web</p>
-                        <p class="fragment">IBM AS400/DB2</p>
-                        <p class="fragment">
-                            <span class="fragment highlight-line-through">Driver PHP</span>
-                        </p>
-                        <p class="fragment">JDBC</p>
-                        <p class="fragment">jdbc2_fdw</p>
+                        <p>Comment rafraichir mes données sans bloquer mon application ?</p>
 
                         <aside class="notes">
-                            Je vais maintenant vous parler du cas pratique que j'ai pu mettre en place.
-                            Voici une étude du besoin.
-
-                            Le besoin était d'avoir une application web,
-                            permettant à nos clients d'accéder à leurs informations.
-
-                            Les données sont stockées sur un IBM/AS400 qui intègre un base DB2.
-                            Premier problème le driver PHP-DB2 n'est pas facilement accessible, en tout cas sous Linux.
-                            OS de notre hébergement.
-                            J'ai réussi, tant bien que mal à le compiler, mais une fois fais j'avais une erreur de license.
-                            Bienvenue dans le monde merveilleux d'IBM.
-
-                            J'avais pu remarquer qu'avec un outils de DB SQL générique développé en Java (DBeaver),
-                            j'avais un connecteur JDBC pour DB2.
-                            Après configuration j'ai pu facilement accéder aux données sur le serveur.
-
-                            C'est là que j'ai découvert les FDW et le <a href="https://github.com/heimir-sverrisson/jdbc2_fdw/">jdbc2_fdw</a>.
-                            Après quelques essais plutôt concluant je me suis lancé.
+                            Le rafraichissement d'une vue matérialisée verrouille son accès en lecture.
+                            Si un visiteur accède à une page web au même moment que le rafraichissement,
+                            le chargement de la page va être ralenti, peut être même fortement.
                         </aside>
                     </section>
 
-                    <section id="explication_cas_pratique">
-                        <h2>Explication</h2>
-
-                        <img id="as_400_proxy_web" class="clean-image" src="assets/img/as_400_proxy_web.png" alt="as_400_proxy_web" />
-
-                        <aside class="notes">
-                            Nous avons donc les données qui sont stockées sur l'AS400.
-
-                            Nous avons aussi le serveur "proxy", va lui se connecter, via jdbc2_fdw, à l'AS400.
-                            Ce serveur ne sert que de passe-plat entre l'AS400 et le serveur pour le Web.
-                            Il permet de faire quelques conversions de données :
-                            les dates n'étaient pas stockées dans un format de date sur l'AS400
-                            ou les booléens étaient stockées comme des entiers, ...
-
-                            Enfin nous avons la base de données pour l'appli Web.
-                            Cette base de données va stocker des données qui lui sont propres.
-                            Elle va aussi se connecter au serveur PostgreSQL nommé "proxy".
-                        </aside>
-                    </section>
-
-                    <section id="rafraichissement_proxy">
-                        <h2>Rafraichissement du proxy</h2>
-
-                        <pre class="fragment"><code class="hlsql">
-    CREATE FOREIGN TABLE f_ma_table (...) SERVER server OPTIONS (...);
-
-    CREATE MATERIALIZED VIEW m_ma_table AS
-    SELECT ... FROM f_ma_table;
-
-    CREATE FUNCTION refresh_view(name) RETURNS INTEGER AS $$
-    BEGIN
-        EXECUTE format('REFRESH MATERIALIZED VIEW %s', name);
-        RETURN 1;
-    END;
-    $$ LANGUAGE 'plpgsql';
-
-    CREATE VIEW refresh_ma_table AS SELECT refresh_view('m_ma_table');
-                        </code></pre>
-
-                        <aside class="notes">
-                            Nous avons besoin que nos données restent à jour.
-                            Nous avons vu que mettre à jour une vue matérialisée est très simple.
-                            Il suffit d'appeler la commande REFRESH MATERIALIZED VIEW.
-
-                            Comme nous avions quelques conversions entre l'AS400 et le "proxy",
-                            et pour éviter de garder la connexion avec l'AS400 trop longtemps,
-                            les données sont enregistrées dans des vues matérialisés.
-                            Cela nous permet aussi d'avoir des index personnalisés et
-                            d'améliorer les performances.
-
-                            J'ai mis en place l'appel du "refresh" au travers d'une fonction,
-                            appelée dans une vue.
-                            Cette vue pouvait être concidérée comme une table distante
-                            sur l'instance web.
-                            Avec cette technique, il est possible de gérer le rafraichissement
-                            des données, depuis l'instance web.
-                        </aside>
-                    </section>
-
-                    <section id="rafraichissement_web">
-                        <h2>Rafraichissement côté web</h2>
+                    <section id="double_materialized_views">
+                        <h1>Solution 1</h1>
 
                         <p class="fragment">Deux vues matérialisées</p>
-                        <p class="fragment">La première liée au "proxy"</p>
-                        <p class="fragment">La seconde liée à la première</p>
+                        <p class="fragment">La première sur la table distante</p>
+                        <p class="fragment">La seconde sur la première vue mat</p>
 
                         <aside class="notes">
-                            A l'image du serveur "proxy",
-                            les tables distantes sont tamporisées dans des vues matérialisées.
-
-                            Le problème est que si le refraichissement d'une vue matérialisée
-                            verrouille son accès en lecture.
-                            Du coup si un utilisateur accède à une page web
-                            au moment où le refraichissement s'effectue,
-                            le chargement de la page va être très long.
-
-                            Du coup, pour réduire ce temps de verrouillage,
+                            Pour réduire se temps de verrouillage,
                             j'ai mis en place deux vues matérialisées.
-                            La première vue récupére les données depuis le "proxy",
-                            la seconde à partir de la première vue.
-                            Le refraichissement de la seconde est très rapide
-                            car les données sont déjà en local.
+                            La première vue récupère les données de la tables distante.
+                            La seconde vue récupère les données de la première vue.
                         </aside>
                     </section>
 
-                    <section id="complement1">
-                        <h2>Complément (1/2)</h2>
+                    <section id="double_materialized_views_graph">
+                        <h1>Solution 1</h1>
 
-                        <p class="fragment">Table de commande trop volumineuse</p>
-                        <p class="fragment">Durée de rafraichissement > 20 minutes</p>
-                        <p class="fragment">Besoin d'avoir des données de moins de 10 minutes</p>
-
-                        <aside class="notes">
-                            Certaines tables, comme les commandes,
-                            peuvent contenir un nombre important de données.
-                            Le rafraichissement pouvait prendre plusieurs dizaines de minutes.
-                            Il n'est pas concevable de rafraichir ces données toutes les 10 minutes.
-                            Il n'est malheureusement pas concevable que les données soient vieilles de plus de 10 minutes.
-                        </aside>
+                        <img id="double_materialized_views" class="clean-image" alt="graph" src="./assets/img/refresh_double_views.png" />
                     </section>
 
-                    <section id="complement2">
-                        <h2>Complément (2/2)</h2>
+                    <section id="double_materialized_views_query">
+                        <h1>Solution 1</h1>
 
-                        <ul>
-                            <li class="fragment">Découpage en 2 vues (proxy) :</li>
-                            <li class="fragment">toutes les lignes</li>
-                            <li class="fragment">les "dernières" commandes</li>
-                        </ul>
-                        <ul>
-                            <li class="fragment">Récupération (web) :</li>
-                            <li class="fragment">historique : une fois par jour</li>
-                            <li class="fragment">"light" : toutes les 10 minutes</li>
-                        </ul>
-                        <p class="fragment">Fusion dans une 3ème vue</p>
-
-                        <aside class="notes">
-                            Du coup, il a fallu composer.
-
-                            Sur le proxy j'ai découpé la table (distante) des commandes en 2 parties.
-                            La première contient toutes les données,
-                            elle servira de base et d'historique.
-                            La seconde contient que les commandes de moins d'une semaine,
-                            ou qui ne sont pas expédiées.
-                            En gros, ce sont les commandes les plus importantes.
-
-                            Ensuite sur l'instance web, nous allons pouvoir recharger ces deux tables distinctement dans des vues matérialisées.
-                            La table d'historique est rafraichie tout les jours vers 2h du matin.
-                            La seconde table, qui du coup, est bien plus légère peux alors être raffraichie toutes les 10 minutes.
-
-                            Une fois ces deux tables raffraichies,
-                            une troisième (et dernière) vue matérialisée est créée.
-                            Elle fusionne les deux premières vues,
-                            ce qui fait que nous avons une table de commandes complète.
-                            Du coup, dans notre application nous n'avons qu'une seule table à gérer.
-                        </aside>
+                        <pre><code class="hlsql">
+    CREATE MATERIALIZED VIEW t_customer AS
+    SELECT * FROM m_customer
+    WITH NO DATA;
+    CREATE INDEX t_customer_keys
+        ON t_customer (id);
+                        </code></pre>
                     </section>
 
                 </section>
--->
 
                 <section id="git_fdw">
                     <h1>Git FDW</h1>

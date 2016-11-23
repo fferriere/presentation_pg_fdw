@@ -253,10 +253,10 @@ CREATE TABLE customer (
     id SERIAL NOT NULL PRIMARY KEY,
     lastname VARCHAR(64) NOT NULL,
     firstname VARCHAR(64) NOT NULL,
-    birthday DATE NOT NULL
+    birthdate DATE NOT NULL
 );
 
-INSERT INTO customer (lastname, firstname, birthday) VALUES
+INSERT INTO customer (lastname, firstname, birthdate) VALUES
 ('Potter', 'Harry', '1980-08-31'),
 ('Weasley', 'Ron', '1980-03-01'),
 ('Granger', 'Hermione', '1979-09-19'),

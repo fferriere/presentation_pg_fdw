@@ -60,15 +60,6 @@
     margin-bottom: 50px;
 }
 
-#pic-decentralisation,
-#pic-cqrs-es,
-#pic-decentralisation-exemple {
-    height: 8em;
-}
-#cqrs_es_multiple {
-    height: 13em;
-}
-
 #comment_ca_marche h1 {
     font-size: 2.4em;
 }
@@ -104,6 +95,27 @@
 }
 .result_sql span.result {
     color: green;
+}
+
+#client-server {
+    padding-top: 100px;
+}
+#client-server h2 {
+    margin-bottom: 0px;
+}
+
+#project-link {
+    margin-top: 100px;
+    margin-bottom: 0px;
+}
+
+#double_materialized_views_graph h2 {
+    margin-top: 80px;
+    margin-bottom: 0px;
+}
+
+#double_materialized_views_graph img {
+    height: 12em;
 }
 
 #git_fdw_presentation h2 {
