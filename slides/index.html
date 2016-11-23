@@ -693,24 +693,24 @@
 
                     <section id="git_fdw_presentation">
                         <h2>Création</h2>
-                        <pre class="fragment"><code class="hlsql">CREATE EXTENSION multicorn;
+                        <pre class="fragment"><code class="hlsql">    CREATE EXTENSION multicorn;
 
-CREATE SERVER git_server
-    FOREIGN DATA WRAPPER multicorn
+    CREATE SERVER git_server
+        FOREIGN DATA WRAPPER multicorn
+        OPTIONS (
+            wrapper 'multicorn.gitfdw.GitFdw'
+        );</code></pre>
+                        <pre class="fragment"><code class="hlsql">    CREATE FOREIGN TABLE git_atoum (
+        author_name VARCHAR(128),
+        author_email VARCHAR(128),
+        message TEXT,
+        hash VARCHAR(128),
+        date TIMESTAMP
+    )
+    SERVER git_server
     OPTIONS (
-        wrapper 'multicorn.gitfdw.GitFdw'
+        path '/opt/atoum'
     );</code></pre>
-                        <pre class="fragment"><code class="hlsql">CREATE FOREIGN TABLE git_atoum (
-    author_name VARCHAR(128),
-    author_email VARCHAR(128),
-    message TEXT,
-    hash VARCHAR(128),
-    date TIMESTAMP
-)
-SERVER git_server
-OPTIONS (
-    path '/opt/atoum'
-);</code></pre>
 
                         <aside class="notes">
                             Nous allons voir rapidement comment utiliser le FDW pour git.
@@ -732,11 +732,13 @@ OPTIONS (
 
                     <section id="git_fdw_select">
                         <h2>SELECT</h2>
-                        <pre><code class="hlsql">SELECT to_char(date, 'YYYY-TQ') AS quarter,
-        COUNT(*) as nb_commit
-FROM git_atoum
-GROUP BY to_char(date, 'YYYY-TQ')
-ORDER BY quarter ASC;</code></pre>
+                        <pre><code class="hlsql">
+    SELECT to_char(date, 'YYYY-TQ') AS quarter,
+            COUNT(*) as nb_commit
+    FROM git_atoum
+    GROUP BY to_char(date, 'YYYY-TQ')
+    ORDER BY quarter ASC;
+                        </code></pre>
 
                         <aside class="notes">
                             Voici un exemple de requête SQL que nous pouvons faire.
@@ -789,18 +791,20 @@ Time: 63.959 ms</pre>
 
                     <section id="git_fdw_select_in_json">
                         <h2>Graph (requête)</h2>
-                        <pre><code class="hlsql">SELECT to_json(t)
-FROM (
-    SELECT  array_agg(data.quarter) AS labels,
-            array_agg(data.nb_commit) AS data
+                        <pre><code class="hlsql">
+    SELECT to_json(t)
     FROM (
-        SELECT to_char(date, 'YYYY-TQ') AS quarter,
-                COUNT(*) as nb_commit
-        FROM git_atoum
-        GROUP BY to_char(date, 'YYYY-TQ')
-        ORDER BY quarter ASC
-    ) AS data
-) AS t;</code></pre>
+        SELECT  array_agg(data.quarter) AS labels,
+                array_agg(data.nb_commit) AS data
+        FROM (
+            SELECT to_char(date, 'YYYY-TQ') AS quarter,
+                    COUNT(*) as nb_commit
+            FROM git_atoum
+            GROUP BY to_char(date, 'YYYY-TQ')
+            ORDER BY quarter ASC
+        ) AS data
+    ) AS t;
+                        </code></pre>
 
                         <aside class="notes">
                             En associant la requête précédente avec le module JSON de PostgreSQL,
