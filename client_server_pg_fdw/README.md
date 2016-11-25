@@ -26,7 +26,7 @@ Lors du démarrage les deux serveurs vont se voir attitrer un nom de domaine cha
 
 Lors du premier démarrage les instances sont initalisées avec l'utilisateur _`docker`_ et son mot de passe _`docker`_.
 
-Pour initialiser les données des deux serveurs vous devez éxécuter les scripts `SQL` dédiés à chaque instances :
+Pour initialiser les données des deux serveurs vous devez exécuter les scripts `SQL` dédiés à chaque instances :
 `./sql/server/*.sql` pour l'instance `server` et `./sql/client/*.sql`.
 
 ### Connexion aux serveurs
