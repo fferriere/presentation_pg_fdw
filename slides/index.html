@@ -645,6 +645,103 @@
                     </section>
                 </section>
 
+                <section id="cas_pratique">
+                    <h1>Cas pratique</h1>
+
+                    <section id="besoin">
+                        <h2>Besoin</h2>
+
+                        <p class="fragment">Application Web</p>
+                        <p class="fragment">IBM AS400/DB2</p>
+                        <p class="fragment">
+                            <span class="fragment highlight-line-through">Driver PHP</span>
+                        </p>
+                        <p class="fragment">JDBC</p>
+                        <p class="fragment">jdbc2_fdw</p>
+
+                        <aside class="notes">
+                            Je vais maintenant vous parler du cas pratique que j'ai pu mettre en place.
+                            Voici une étude du besoin.
+
+                            Le besoin était d'avoir une application web,
+                            permettant à nos clients d'accéder à leurs informations.
+
+                            Les données sont stockées sur un IBM/AS400 qui intègre un base DB2.
+                            Premier problème le driver PHP-DB2 n'est pas facilement accessible, en tout cas sous Linux.
+                            OS de notre hébergement.
+                            J'ai réussi, tant bien que mal à le compiler, mais une fois fais j'avais une erreur de license.
+                            Bienvenue dans le monde merveilleux d'IBM.
+
+                            J'avais pu remarquer qu'avec un outils de DB SQL générique développé en Java (DBeaver),
+                            j'avais un connecteur JDBC pour DB2.
+                            Après configuration j'ai pu facilement accéder aux données sur le serveur.
+
+                            C'est là que j'ai découvert les FDW et le <a href="https://github.com/heimir-sverrisson/jdbc2_fdw/">jdbc2_fdw</a>.
+                            Après quelques essais plutôt concluant je me suis lancé.
+                        </aside>
+                    </section>
+
+                    <section id="explication_cas_pratique">
+                        <h2>Explication</h2>
+
+                        <img class="clean-image" src="assets/img/as400.png" alt="as_400_proxy_web" />
+
+                        <aside class="notes">
+                            Nous avons donc les données qui sont stockées sur l'AS400.
+
+                            Nous avons aussi le serveur "proxy", va lui se connecter, via jdbc2_fdw, à l'AS400.
+                            Ce serveur ne sert que de passe-plat entre l'AS400 et le serveur pour le Web.
+                            Il permet de faire quelques conversions de données :
+                            les dates n'étaient pas stockées dans un format de date sur l'AS400
+                            ou les booléens étaient stockées comme des entiers, ...
+
+                            Enfin nous avons la base de données pour l'appli Web.
+                            Cette base de données va stocker des données qui lui sont propres.
+                            Elle va aussi se connecter au serveur PostgreSQL nommé "proxy".
+                        </aside>
+                    </section>
+
+                    <section id="rafraichissement_proxy">
+                        <h2>Rafraichissement du proxy</h2>
+
+                        <pre class="fragment"><code class="hlsql">
+    CREATE FOREIGN TABLE f_ma_table (...) SERVER server OPTIONS (...);
+
+    CREATE MATERIALIZED VIEW m_ma_table AS
+    SELECT ... FROM f_ma_table;
+
+    CREATE FUNCTION refresh_view(name) RETURNS INTEGER AS $$
+    BEGIN
+    EXECUTE format('REFRESH MATERIALIZED VIEW %s', name);
+    RETURN 1;
+    END;
+    $$ LANGUAGE 'plpgsql';
+
+    CREATE VIEW refresh_ma_table AS SELECT refresh_view('m_ma_table');
+                        </code></pre>
+
+                        <aside class="notes">
+                            Nous avons besoin que nos données restent à jour.
+                            Nous avons vu que mettre à jour une vue matérialisée est très simple.
+                            Il suffit d'appeler la commande REFRESH MATERIALIZED VIEW.
+
+                            Comme nous avions quelques conversions entre l'AS400 et le "proxy",
+                            et pour éviter de garder la connexion avec l'AS400 trop longtemps,
+                            les données sont enregistrées dans des vues matérialisés.
+                            Cela nous permet aussi d'avoir des index personnalisés et
+                            d'améliorer les performances.
+
+                            J'ai mis en place l'appel du "refresh" au travers d'une fonction,
+                            appelée dans une vue.
+                            Cette vue pouvait être concidérée comme une table distante
+                            sur l'instance web.
+                            Avec cette technique, il est possible de gérer le rafraichissement
+                            des données, depuis l'instance web.
+                        </aside>
+                    </section>
+
+                </section>
+
                 <section>
                     <section>
                         <h1>Problème 1</h1>
