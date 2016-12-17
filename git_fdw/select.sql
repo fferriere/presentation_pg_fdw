@@ -1,3 +1,35 @@
+SELECT *
+FROM git_atoum
+ORDER BY date DESC
+LIMIT 10;
+/*
+  author_name   |         author_email         |                                                    message                                                    |                   hash                   |        date
+----------------+------------------------------+---------------------------------------------------------------------------------------------------------------+------------------------------------------+---------------------
+ Frédéric Hardy | frederic.hardy@mageekbox.net | Evaluate test about variadic only if PHP version ≥ 5.6.0.                                                     | 8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | 2016-11-19 23:21:09
+ Frédéric Hardy | frederic.hardy@mageekbox.net | Evaluate class if PHP version ≥ 5.6.0.                                                                        | 135080a82c2b4fbc7f74c05b1c3494046a675a48 | 2016-11-19 21:54:04
+ Frédéric Hardy | frederic.hardy@mageekbox.net | Use full PHP version number.                                                                                  | 752f9cc20eee4dd7db16b68bff69b788e9bb4ec9 | 2016-11-19 21:35:23
+ Frédéric Hardy | frederic.hardy@mageekbox.net | Fix PHP version comparator.                                                                                   | 6077ee7b4a99fb4441225f5e4b7c6f1cc22c9838 | 2016-11-19 21:27:27
+ Frédéric Hardy | frederic.hardy@mageekbox.net | Check `allIsInterface()` in mock generator behavior only if PHP version ≥ 5.6.                                | f7905e9a11587a47eb7239b08295c5125be184ce | 2016-11-19 21:14:49
+ Frédéric Hardy | frederic.hardy@mageekbox.net | Fix bug in mock generator in case of variadic arguments in constructor and method `allIsInterface()` is used. | a287fc1256e1ea269b5fe41de8f370c54a4c29c1 | 2016-11-19 21:04:04
+ Julien BIANCHI | contact@jubianchi.Fr         | Merge pull request #660 from agallou/fix_santa                                                                | e9d37193dc5ef59ca5d0f00da46c73770b78d39c | 2016-11-11 10:41:06
+ Adrien Gallou  | adriengallou@gmail.com       | fix santa report                                                                                              | 487eccd5d6ef4bd00dc67943d1d6264c13103c9e | 2016-10-16 09:57:44
+ jubianchi      | contact@jubianchi.fr         | Set version to dev-master.                                                                                    | 1809e7680420918616af7831d71f575364f2a9f9 | 2016-10-08 11:41:17
+ jubianchi      | contact@jubianchi.fr         | Set version to 2.9.0-beta1.                                                                                   | 56f1450241742aed188733605ef594816cebdbdc | 2016-10-08 11:41:14
+(10 rows)
+*/
+
+SELECT author_name, message, date
+FROM git_atoum
+WHERE author_name ILIKE '%florian%'
+ORDER BY date DESC;
+
+/*
+   author_name    |                       message                        |        date
+------------------+------------------------------------------------------+---------------------
+ Florian FERRIERE | Merge branch 'master' into correct-datetimeimmutable | 2016-03-23 08:18:59
+ Florian Ferriere | Correction for dateTimeImmutable happens with #547   | 2016-03-21 14:14:52
+(2 rows)
+*/
 
 SELECT author_email, COUNT(*) as nb_commit
 FROM git_atoum

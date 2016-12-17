@@ -135,7 +135,7 @@
     margin-top: 50px;
 }
 
-#git_fdw_result pre {
+#git_fdw_quarter_result pre {
     float: left;
     width: 45%;
     margin: 0 2.5%;
@@ -143,4 +143,12 @@
 
 #git_fdw_chart h2 {
     margin-top: 50px;
+}
+
+#git_fdw_quarter_result h2 {
+    margin-top: 30px;
+}
+
+.nohl .hljs-string {
+    color: black !important;
 }

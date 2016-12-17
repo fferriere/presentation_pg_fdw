@@ -29,9 +29,8 @@
 
 
                 <section id="title">
-                    <h1>Foreign Data Wrapper</h1>
-                    <h2>ou un réseau social pour vos données</h2>
-                    <h2>sous PostgreSQL</h2>
+                    <h1>Git en SQL</h1>
+                    <h2>avec PostgreSQL</h2>
                 </section>
 
                 <section id="qui-suis-je">
@@ -193,34 +192,60 @@
                 <section id="git_fdw">
                     <h1>Git FDW</h1>
 
-                    <section>
+                    <section id="git_fdw_init">
+                    </section>
+
+                    <section id="git_fdw_wrappers">
+                        <h2>Wrappers</h2>
+
+                        <ul>
+                            <li class="fragment">
+                                <span class="fragment highlight-line-through">&nbsp;C&nbsp;</span>
+                            </li>
+                            <li class="fragment">Multicorn</li>
+                        </ul>
+
+                        <aside class="notes">
+                            A ce jour il y a 2 wrappers pour GIT.
+                            Un premier en C.
+                            Je voulais utiliser celui-ci mais malheureusement, il ne compile plus.
+
+                            Le second fait parti du package Multicorn.
+                            L'installation est décrite dans le <a href="../../../git_fdw/README.md" target="_blank">README</a> que j'ai utilisé pour tester.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <h1>Mise en place</h1>
+
+                    <section id="git_fdw_load_extension">
+                        <h2>Initialisation de l'extension</h2>
+                        <pre><code class="hlsql">
+
+    CREATE EXTENSION multicorn;
+
+                        </code></pre>
+
+                        <aside class="notes">
+                            Dans un premier temps on déclare l'extension.
+                        </aside>
                     </section>
 
                     <section id="git_fdw_presentation">
                         <h2>Déclaration du serveur</h2>
                         <pre><code class="hlsql">
-    CREATE EXTENSION multicorn;
 
     CREATE SERVER git_server
         FOREIGN DATA WRAPPER multicorn
         OPTIONS (
             wrapper 'multicorn.gitfdw.GitFdw'
         );
+
                         </code></pre>
 
                         <aside class="notes">
-                            Nous allons voir rapidement comment utiliser le FDW pour git.
-                            Il y a deux extensions pour GIT une en C et un composant compris dans multicorn.
-
-                            J'aurai préféré utiliser l'extension en C
-                            mais la compilation n'a pas fonctionnée.
-
-                            Je me suis donc rabattu sur l'extension multicorn.
-                            Sont installation est décrite dans le <a href="../../../git_fdw/README.md" target="_blank">README</a> que j'ai utilisé pour tester.
-
-                            Une fois l'installation faite, la configuration est très simple.
-                            Comme on l'a déjà vu tout à l'heure : on crée l'extension.
-                            Puis le serveur.
+                            Ensuite on déclare le serveur.
                         </aside>
                     </section>
 
@@ -241,12 +266,85 @@
                         </code></pre>
 
                         <aside class="notes">
-                            Ensuite il suffit de créer la table distante avec les bonnes options.
+                            Enfin il suffit de créer la table distante avec les bonnes options.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <h1>Utilisation</h1>
+
+                    <section id="git_fdw_select">
+                        <h2>Simple SELECT</h2>
+
+                        <pre><code class="hlsql">
+    SELECT *
+    FROM git_atoum
+    ORDER BY date DESC
+    LIMIT 10;
+                        </code></pre>
+
+                        <aside class="notes">
+                            Voici un exemple de requête SQL que nous pouvons faire.
+                            C'est très simple et surtout plus pratique qu'avec un `git log`.
                         </aside>
                     </section>
 
-                    <section id="git_fdw_select">
-                        <h2>SELECT</h2>
+                    <section id="git_fdw_result">
+                        <h2>Résultat</h2>
+
+                        <pre><code class="nohl">
+  author_name   |   author_email  |                                                    message                                                    |                   hash                   |        date
+----------------+-----------------+---------------------------------------------------------------------------------------------------------------+------------------------------------------+---------------------
+ Frédéric Hardy | frederic.hardy@ | Evaluate test about variadic only if PHP version ≥ 5.6.0.                                                     | 8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | 2016-11-19 23:21:09
+ Frédéric Hardy | frederic.hardy@ | Evaluate class if PHP version ≥ 5.6.0.                                                                        | 135080a82c2b4fbc7f74c05b1c3494046a675a48 | 2016-11-19 21:54:04
+ Frédéric Hardy | frederic.hardy@ | Use full PHP version number.                                                                                  | 752f9cc20eee4dd7db16b68bff69b788e9bb4ec9 | 2016-11-19 21:35:23
+ Frédéric Hardy | frederic.hardy@ | Fix PHP version comparator.                                                                                   | 6077ee7b4a99fb4441225f5e4b7c6f1cc22c9838 | 2016-11-19 21:27:27
+ Frédéric Hardy | frederic.hardy@ | Check `allIsInterface()` in mock generator behavior only if PHP version ≥ 5.6.                                | f7905e9a11587a47eb7239b08295c5125be184ce | 2016-11-19 21:14:49
+ Frédéric Hardy | frederic.hardy@ | Fix bug in mock generator in case of variadic arguments in constructor and method `allIsInterface()` is used. | a287fc1256e1ea269b5fe41de8f370c54a4c29c1 | 2016-11-19 21:04:04
+ Julien BIANCHI | jubianchi@      | Merge pull request #660 from agallou/fix_santa                                                                | e9d37193dc5ef59ca5d0f00da46c73770b78d39c | 2016-11-11 10:41:06
+ Adrien Gallou  | adriengallou@   | fix santa report                                                                                              | 487eccd5d6ef4bd00dc67943d1d6264c13103c9e | 2016-10-16 09:57:44
+ jubianchi      | jubianchi@      | Set version to dev-master.                                                                                    | 1809e7680420918616af7831d71f575364f2a9f9 | 2016-10-08 11:41:17
+ jubianchi      | jubianchi@      | Set version to 2.9.0-beta1.                                                                                   | 56f1450241742aed188733605ef594816cebdbdc | 2016-10-08 11:41:14
+(10 rows)
+                        </code></pre>
+
+                        <aside class="notes">
+                            Voici le résultat.
+                        </aside>
+                    </section>
+
+                    <section id="git_fdw_os_select">
+                        <h2>Filtrage par auteur</h2>
+
+                        <pre><code class="hlsql">
+    SELECT author_name, message, date
+    FROM git_atoum
+    WHERE author_name ILIKE '%florian%'
+    ORDER BY date DESC;
+                        </code></pre>
+                    </section>
+
+                    <section id="git_fdw_os_result">
+
+                        <h2>Résultat</h2>
+
+                        <pre><code class="nohl">
+   author_name    |                       message                        |        date
+------------------+------------------------------------------------------+---------------------
+ Florian FERRIERE | Merge branch 'master' into correct-datetimeimmutable | 2016-03-23 08:18:59
+ Florian Ferriere | Correction for dateTimeImmutable happens with #547   | 2016-03-21 14:14:52
+(2 rows)
+                        </code></pre>
+
+                        <aside class="notes">
+                            Et oui, j'ai eu la joie de voir une PR validée sur le projet Atoum.
+                            Comme quoi, tout le monde peux participer à un projet open-source.
+                        </aside>
+                    </section>
+
+                    <section id="git_fdw_quarter_select">
+                        <h2>Plus avancé</h2>
                         <pre><code class="hlsql">
     SELECT to_char(date, 'YYYY-TQ') AS quarter,
             COUNT(*) as nb_commit
@@ -256,11 +354,12 @@
                         </code></pre>
 
                         <aside class="notes">
-                            Voici un exemple de requête SQL que nous pouvons faire.
+                            Voici un exemple de requête SQL un peu plus complexe que nous pouvons faire.
+                            Elle permet de récupérer le nombre de commit par trimestre.
                         </aside>
                     </section>
 
-                    <section id="git_fdw_result">
+                    <section id="git_fdw_quarter_result">
                         <h2>Résultat</h2>
                         <pre> quarter | nb_commit
 ---------+-----------
