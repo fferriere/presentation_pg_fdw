@@ -18,6 +18,22 @@ LIMIT 10;
 (10 rows)
 */
 
+\timing
+SELECT hash, author_name, date, message
+FROM git_atoum
+ORDER BY date DESC
+LIMIT 2;
+/*
+                   hash                   |  author_name   |        date         |                          message
+------------------------------------------+----------------+---------------------+-----------------------------------------------------------
+ 8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | Frédéric Hardy | 2016-11-19 23:21:09 | Evaluate test about variadic only if PHP version ≥ 5.6.0.
+ 135080a82c2b4fbc7f74c05b1c3494046a675a48 | Frédéric Hardy | 2016-11-19 21:54:04 | Evaluate class if PHP version ≥ 5.6.0.
+(2 rows)
+
+Time: 57.630 ms
+*/
+
+
 SELECT author_name, message, date
 FROM git_atoum
 WHERE author_name ILIKE '%florian%'

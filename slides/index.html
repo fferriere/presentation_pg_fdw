@@ -293,8 +293,7 @@
                     <section id="git_fdw_result">
                         <h2>Résultat</h2>
 
-                        <pre><code class="nohl">
-  author_name   |   author_email  |                                                    message                                                    |                   hash                   |        date
+                        <pre><code class="nohl">  author_name   |   author_email  |                                                    message                                                    |                   hash                   |        date
 ----------------+-----------------+---------------------------------------------------------------------------------------------------------------+------------------------------------------+---------------------
  Frédéric Hardy | frederic.hardy@ | Evaluate test about variadic only if PHP version ≥ 5.6.0.                                                     | 8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | 2016-11-19 23:21:09
  Frédéric Hardy | frederic.hardy@ | Evaluate class if PHP version ≥ 5.6.0.                                                                        | 135080a82c2b4fbc7f74c05b1c3494046a675a48 | 2016-11-19 21:54:04
@@ -307,7 +306,8 @@
  jubianchi      | jubianchi@      | Set version to dev-master.                                                                                    | 1809e7680420918616af7831d71f575364f2a9f9 | 2016-10-08 11:41:17
  jubianchi      | jubianchi@      | Set version to 2.9.0-beta1.                                                                                   | 56f1450241742aed188733605ef594816cebdbdc | 2016-10-08 11:41:14
 (10 rows)
-                        </code></pre>
+
+Time: 59.394 ms</code></pre>
 
                         <aside class="notes">
                             Voici le résultat.
@@ -453,6 +453,142 @@ Time: 63.959 ms</pre>
                         des autres branches qui ne sont pas mergées
                         dans la branche courante.
                     </aside>
+                </section>
+
+                <section id="git_fdw_rivalry">
+                    <h1>Concurrence</h1>
+
+                    <p class="fragment">
+                        <a href="https://github.com/gitql/gitql">gitql/gitql</a>
+                    </p>
+                    <p class="fragment">
+                        <a href="https://github.com/cloudson/gitql">cloudson/gitql</a>
+                    </p>
+
+                    <aside class="notes">
+                        J'ai découvert qu'il y avait 2 projets,
+                        tous les 2 deux écrits en Go.
+                        Qui permettait de faire plus ou moins la même chose.
+                        Ces projets sont encore en développement.
+
+                        Nous allons voir leurs utilisations
+                    </aside>
+                </section>
+
+                <section id="git_fdw_rivalry_gitql_gitql">
+                    <h1>gitql/gitql</h1>
+
+                    <section></section>
+
+                    <section>
+                        <h2>Utilisation</h2>
+
+                        <pre><code class="hlsql">    gitql query 'SHOW TABLES;'</code></pre>
+
+                        <pre><code class="nohl">    +--------------+
+    |    TABLE     |
+    +--------------+
+    | blobs        |
+    | commits      |
+    | objects      |
+    | refs         |
+    | tags         |
+    | tree_entries |
+    +--------------+ </code></pre>
+
+                        <aside class="notes">
+                            Premier point intéressant, on peux lister toutes les tables possibles.
+                            Et surtout, il est possible de requêter sur les commits, les références (branches, tags, ...) et autres.
+                            Le FDW ne permet pas les autres récupérer les autres informations que les commits.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Utilisation</h2>
+
+                        <pre><code class="hlsql">    gitql query 'DESCRIBE TABLE commits;'</code></pre>
+                        <pre><code class="nohl">    +----------------+-------------------------+
+    |      NAME      |          TYPE           |
+    +----------------+-------------------------+
+    | hash           | string                  |
+    | author_name    | string                  |
+    | author_email   | string                  |
+    | author_when    | timestamp with timezone |
+    | comitter_name  | string                  |
+    | comitter_email | string                  |
+    | comitter_when  | timestamp with timezone |
+    | message        | string                  |
+    +----------------+-------------------------+ </code></pre>
+
+                        <aside class="notes">
+                            Il est également possible de décrire une table.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Utilisation</h2>
+
+                        <pre><code class="hlsql"> gitql query 'SELECT * FROM refs ORDER BY name LIMIT 4;'</code></pre>
+                        <pre><code class="nohl"> +------------------------------------------+---------------------------+-----------+---------+-----------+--------+-------------------+
+ |                   HASH                   |           NAME            | IS BRANCH | IS NOTE | IS REMOTE | IS TAG |      TARGET       |
+ +------------------------------------------+---------------------------+-----------+---------+-----------+--------+-------------------+
+ | 0000000000000000000000000000000000000000 | HEAD                      | false     | false   | false     | false  | refs/heads/master |
+ | 8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | refs/heads/master         | true      | false   | false     | false  |                   |
+ | 33597f45906cfc9ded860cb598af0600ffda8e69 | refs/remotes/origin/1.x   | false     | false   | true      | false  |                   |
+ | 0b6ea4c2909b8a38e2abcd3a9562750f490ba2ba | refs/remotes/origin/2.0.x | false     | false   | true      | false  |                   |
+ +------------------------------------------+---------------------------+-----------+---------+-----------+--------+-------------------+ </code></pre>
+
+                        <aside class="notes">
+                            L'utilisation est très simple.
+                            Les commandes SQL classiques sont utilisables.
+                        </aside>
+                    </section>
+                </section>
+
+                <section id="git_fdw_rivalry_gitql_gitql_failure">
+                        <h1>gitsql/gitsql : Défauts</h1>
+                    <section>
+                        <h2>Temps d'exécution (1/2)</h2>
+
+                        <pre><code class="hlsql"> time gitql query 'SELECT hash, author_name, author_when, message
+ FROM commits ORDER BY author_when DESC LIMIT 2;'</code></pre>
+                        <pre><code class="nohl"> +------------------------------------------+----------------+---------------------------+-----------------------------------------------------------+
+ |                   HASH                   |  AUTHOR NAME   |          AUTHOR WHEN      |            MESSAGE                                        |
+ +------------------------------------------+----------------+---------------------------+-----------------------------------------------------------+
+ | 8c8d424403f849310bbe3fabb74d9fce1389b7f8 | Frédéric Hardy | 2016-11-23 18:46:48 +0100 | Now, each mock instance may be unique.                    |
+ | 8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | Frédéric Hardy | 2016-11-20 00:21:09 +0100 | Evaluate test about variadic only if PHP version ≥ 5.6.0. |
+ +------------------------------------------+----------------+---------------------------+-----------------------------------------------------------+ </code></pre>
+                        <p>
+                            <span style="color: blue;">real&nbsp;&nbsp;&nbsp;&nbsp;0m8.169s</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span style="color: red;">user&nbsp;&nbsp;&nbsp;&nbsp;0m16.476s<span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span style="color: green;">sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0m0.764s</span>
+                        </p>
+
+                        <aside class="notes">
+                            Pour récupérer 2 lignes, gitql met environ 16 secondes.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Temps d'exécution (2/2)</h2>
+
+                        <pre><code class="hlsql"> SELECT hash, author_name, date, message
+ FROM git_atoum ORDER BY date DESC LIMIT 2;</code></pre>
+
+                        <pre><code class="nohl">                    hash                   |  author_name   |        date         |                          message
+ ------------------------------------------+----------------+---------------------+-----------------------------------------------------------
+  8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | Frédéric Hardy | 2016-11-19 23:21:09 | Evaluate test about variadic only if PHP version ≥ 5.6.0.
+  135080a82c2b4fbc7f74c05b1c3494046a675a48 | Frédéric Hardy | 2016-11-19 21:54:04 | Evaluate class if PHP version ≥ 5.6.0.
+ (2 rows)
+
+ Time: 57.630 ms</code></pre>
+
+                        <aside class="notes">
+                            Le FDW, lui, ne met qu'environ 60 milli-secondes.
+                        </aside>
+                    </section>
                 </section>
 
                 <section id="documentation">

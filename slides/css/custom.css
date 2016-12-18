@@ -152,3 +152,7 @@
 .nohl .hljs-string {
     color: black !important;
 }
+
+#git_fdw_rivalry_gitql_gitql_failure h1 {
+    font-size: 2.2em;
+}
