@@ -293,7 +293,7 @@
                     <section id="git_fdw_result">
                         <h2>Résultat</h2>
 
-                        <pre><code class="nohl">  author_name   |   author_email  |                                                    message                                                    |                   hash                   |        date
+                        <pre><code class="nohighlight">  author_name   |   author_email  |                                                    message                                                    |                   hash                   |        date
 ----------------+-----------------+---------------------------------------------------------------------------------------------------------------+------------------------------------------+---------------------
  Frédéric Hardy | frederic.hardy@ | Evaluate test about variadic only if PHP version ≥ 5.6.0.                                                     | 8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | 2016-11-19 23:21:09
  Frédéric Hardy | frederic.hardy@ | Evaluate class if PHP version ≥ 5.6.0.                                                                        | 135080a82c2b4fbc7f74c05b1c3494046a675a48 | 2016-11-19 21:54:04
@@ -329,7 +329,7 @@ Time: 59.394 ms</code></pre>
 
                         <h2>Résultat</h2>
 
-                        <pre><code class="nohl">
+                        <pre><code class="nohighlight">
    author_name    |                       message                        |        date
 ------------------+------------------------------------------------------+---------------------
  Florian FERRIERE | Merge branch 'master' into correct-datetimeimmutable | 2016-03-23 08:18:59
@@ -443,7 +443,7 @@ Time: 63.959 ms</pre>
 
                     <p class="fragment">
                         git log
-                        <span class="fragment">--all</span>
+                        <span class="fragment highlight-line-through">--all</span>
                     </p>
 
                     <aside class="notes">
@@ -458,6 +458,7 @@ Time: 63.959 ms</pre>
                 <section id="git_fdw_rivalry">
                     <h1>Concurrence</h1>
 
+                    <p class="fragment">2 projets en Go</p>
                     <p class="fragment">
                         <a href="https://github.com/gitql/gitql">gitql/gitql</a>
                     </p>
@@ -471,7 +472,7 @@ Time: 63.959 ms</pre>
                         Qui permettait de faire plus ou moins la même chose.
                         Ces projets sont encore en développement.
 
-                        Nous allons voir leurs utilisations
+                        Nous allons voir leurs utilisations.
                     </aside>
                 </section>
 
@@ -485,7 +486,7 @@ Time: 63.959 ms</pre>
 
                         <pre><code class="hlsql">    gitql query 'SHOW TABLES;'</code></pre>
 
-                        <pre><code class="nohl">    +--------------+
+                        <pre><code class="nohighlight">    +--------------+
     |    TABLE     |
     +--------------+
     | blobs        |
@@ -507,7 +508,7 @@ Time: 63.959 ms</pre>
                         <h2>Utilisation</h2>
 
                         <pre><code class="hlsql">    gitql query 'DESCRIBE TABLE commits;'</code></pre>
-                        <pre><code class="nohl">    +----------------+-------------------------+
+                        <pre><code class="nohighlight">    +----------------+-------------------------+
     |      NAME      |          TYPE           |
     +----------------+-------------------------+
     | hash           | string                  |
@@ -529,7 +530,7 @@ Time: 63.959 ms</pre>
                         <h2>Utilisation</h2>
 
                         <pre><code class="hlsql"> gitql query 'SELECT * FROM refs ORDER BY name LIMIT 4;'</code></pre>
-                        <pre><code class="nohl"> +------------------------------------------+---------------------------+-----------+---------+-----------+--------+-------------------+
+                        <pre><code class="nohighlight"> +------------------------------------------+---------------------------+-----------+---------+-----------+--------+-------------------+
  |                   HASH                   |           NAME            | IS BRANCH | IS NOTE | IS REMOTE | IS TAG |      TARGET       |
  +------------------------------------------+---------------------------+-----------+---------+-----------+--------+-------------------+
  | 0000000000000000000000000000000000000000 | HEAD                      | false     | false   | false     | false  | refs/heads/master |
@@ -552,7 +553,7 @@ Time: 63.959 ms</pre>
 
                         <pre><code class="hlsql"> time gitql query 'SELECT hash, author_name, author_when, message
  FROM commits ORDER BY author_when DESC LIMIT 2;'</code></pre>
-                        <pre><code class="nohl"> +------------------------------------------+----------------+---------------------------+-----------------------------------------------------------+
+                        <pre><code class="nohighlight"> +------------------------------------------+----------------+---------------------------+-----------------------------------------------------------+
  |                   HASH                   |  AUTHOR NAME   |          AUTHOR WHEN      |            MESSAGE                                        |
  +------------------------------------------+----------------+---------------------------+-----------------------------------------------------------+
  | 8c8d424403f849310bbe3fabb74d9fce1389b7f8 | Frédéric Hardy | 2016-11-23 18:46:48 +0100 | Now, each mock instance may be unique.                    |
@@ -577,7 +578,7 @@ Time: 63.959 ms</pre>
                         <pre><code class="hlsql"> SELECT hash, author_name, date, message
  FROM git_atoum ORDER BY date DESC LIMIT 2;</code></pre>
 
-                        <pre><code class="nohl">                    hash                   |  author_name   |        date         |                          message
+                        <pre><code class="nohighlight">                    hash                   |  author_name   |        date         |                          message
  ------------------------------------------+----------------+---------------------+-----------------------------------------------------------
   8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | Frédéric Hardy | 2016-11-19 23:21:09 | Evaluate test about variadic only if PHP version ≥ 5.6.0.
   135080a82c2b4fbc7f74c05b1c3494046a675a48 | Frédéric Hardy | 2016-11-19 21:54:04 | Evaluate class if PHP version ≥ 5.6.0.
@@ -591,30 +592,105 @@ Time: 63.959 ms</pre>
                     </section>
                 </section>
 
-                <section id="documentation">
-                    <h1>Documentation</h1>
+                <section>
+                    <h1>cloudson/gitql</h1>
 
-                    <p>
-                        <a href="https://wiki.postgresql.org/wiki/Foreign_data_wrappers">Page des Foreign Data Wrappers</a>
-                    </p>
+                    <section></section>
 
-                    <p>
-                        <a href="https://www.postgresql.org/docs/">Documentation de PG</a>
-                    </p>
+                    <section>
+                        <h2>Utilisation</h2>
 
-                    <p>
-                        <a href="https://www.youtube.com/watch?v=iOwnUPSY0KI">Postgresql : la nouvelle base orientée document par Yan Bonnel (Vidéos)</a>
-                    </p>
+                        <pre><code class="nohighlight">    $ git ql -show-tables
 
-                    <p>
-                        <a href="https://github.com/fferriere/presentation_pg_fdw">Projet Github</a>
-                    </p>
+    Tables:
+
+    branches: name, full_name, hash.
+    commits: hash, date, author, author_email,
+             committer, committer_email, message, full_message.
+    refs :name, full_name, type, hash.
+    remotes: name, url, push_url, owner.
+    tags: name, full_name, hash.</code></pre>
+
+                        <aside class="notes">
+                            Dans ce projet, il est aussi possible de récupérer la liste des tables.
+                            Nous avons également le détail des tables avec la même commande.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Utilisation</h2>
+
+                        <pre><code class="hlsql"> $ time git ql 'SELECT hash, author, date, message
+                FROM commits ORDER BY date DESC LIMIT 2'</code></pre>
+
+                        <pre><code class="nohighlight"> |---------------------------------------------------------------------------------------------------------------------------------------------|
+ | Hash                                     | Author         | Date                | Message                                                   |
+ |---------------------------------------------------------------------------------------------------------------------------------------------|
+ | 8c128304a63fb1f27da3be7db1b4cc561cb0ecd6 | Frédéric Hardy | 2016-11-20 00:21:09 | Evaluate test about variadic only if PHP version ≥ 5.6.0. |
+ |---------------------------------------------------------------------------------------------------------------------------------------------|
+ | 135080a82c2b4fbc7f74c05b1c3494046a675a48 | Frédéric Hardy | 2016-11-19 22:54:04 | Evaluate class if PHP version ≥ 5.6.0.                    |
+ |---------------------------------------------------------------------------------------------------------------------------------------------| </code></pre>
+
+                        <p>
+                            <span style="color: blue;">real&nbsp;&nbsp;&nbsp;&nbsp;0m0.004s</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span style="color: red;">user&nbsp;&nbsp;&nbsp;&nbsp;0m0.001s<span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span style="color: green;">sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0m0.002s</span>
+                        </p>
+
+                        <aside class="notes">
+                            L'utilisation est très simple.
+                            L'intégration avec git est même encore plus poussé.
+                            Le résultat est très rapide, même avec beaucoup de données.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Suppléments</h2>
+
+                        <pre><code class="nohighlight">
+ $ git ql -type=json 'SELECT * FROM refs LIMIT 4'
+                        </code></pre>
+
+                        <pre><code> [
+     {"full_name":"refs/heads/master","hash":"8c128304a63fb1f27da3be7db1b4cc561cb0ecd6","name":"master","type":"branch"},
+     {"full_name":"refs/remotes/origin/HEAD","hash":"NULL","name":"origin/HEAD","type":"remote"},
+     {"full_name":"refs/remotes/origin/1.x","hash":"33597f45906cfc9ded860cb598af0600ffda8e69","name":"origin/1.x","type":"remote"},
+     {"full_name":"refs/remotes/origin/2.0.x","hash":"0b6ea4c2909b8a38e2abcd3a9562750f490ba2ba","name":"origin/2.0.x","type":"remote"}
+ ]</code></pre>
+
+                        <aside class="notes">
+                            Il est également possible de récupérer les données sous le format JSON.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Défauts</h1>
+
+                        <p class="fragment">Filtres</p>
+
+                        <p class="fragment">Consultation</p>
+
+                        <aside class="notes">
+                            Le premier défaut que je pourrais donner,
+                            et pour les 2 projets c'est qu'on ne peux pas aussi bien filtrer qu'en SQL.
+                            Par exemple pour la recherche par prénom on ne peux pas faire de LIKE.
+                            Il faut rechercher avec le nom exact.
+
+                            Le second défaut c'est que les résultats sont plus d'ordre consultatif.
+                            Même si le second projet permet l'extraction en JSON.
+
+                            Avec le FDW on peut manipuler les données comme dans une table.
+                        </aside>
+                    </section>
+
                 </section>
 
                 <section id="merci">
                     <h1>Merci</h1>
-
-                    <h2>Des questions ?</h2>
                 </section>
 
             </div>
