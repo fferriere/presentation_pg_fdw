@@ -436,6 +436,25 @@ Time: 63.959 ms</pre>
                     </section>
                 </section>
 
+                <section id="git_fdw_contrainte">
+                    <h1>Contrainte</h1>
+
+                    <p class="fragment">Uniquement les commits</p>
+
+                    <p class="fragment">
+                        git log
+                        <span class="fragment">--all</span>
+                    </p>
+
+                    <aside class="notes">
+                        Le wrapper git/multicorn exécute un `git log`
+                        pour récupérer les données.
+                        Par conséquence, on ne voit pas les commits
+                        des autres branches qui ne sont pas mergées
+                        dans la branche courante.
+                    </aside>
+                </section>
+
                 <section id="documentation">
                     <h1>Documentation</h1>
 
