@@ -152,3 +152,24 @@
 #git_fdw_rivalry_gitql_gitql_failure h1 {
     font-size: 2.2em;
 }
+
+#remerciements_afup_lyon h1 {
+    color: white;
+    font-size: 5em;
+}
+#remerciements_afup_lyon img.staff {
+    border-color: transparent;
+    width: 25%;
+    position: absolute;
+    top: 47%;
+}
+#remerciements_afup_lyon img.staff#adrien_gallou {
+    left: 8%;
+}
+#remerciements_afup_lyon img.staff#benoit_leveque {
+    right: 8%;
+}
+#logo_afup_lyon {
+    border-color: white;
+    background-color: white;
+}
