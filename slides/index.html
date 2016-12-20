@@ -27,13 +27,11 @@
         <div class="reveal">
             <div class="slides">
 
-
                 <section id="title">
-                <h1>Foreign Data Wrapper</h1>
-                <h2>ou un réseau social pour vos données</h2>
-                <h2>sous PostgreSQL</h2>
+                    <h1>Foreign Data Wrapper</h1>
+                    <h2>ou un réseau social pour vos données</h2>
+                    <h2>sous PostgreSQL</h2>
                 </section>
-
 
                 <section id="qui-suis-je">
                     <h1>Qui suis-je ?</h1>
@@ -140,6 +138,9 @@
                                      - <a href="https://www.postgresql.org/docs/9.6/static/external-pl.html">Extension pour PL</a> : PL/JAVA, PL/PHP, PL/Py, PL/R, PL/Ruby
                                 </li>
                                 <li>
+                                    PostgreSQL permet de stocker et de manipuler du JSON.
+                                </li>
+                                <li>
                                     PostGIS : gestion des objets Spatiaux et Géographique.
                                     Utilisé par OpenStreetMap.
                                 </li>
@@ -173,10 +174,12 @@
                             (Management of External Data), créée en 2003.
                             Comme son nom l'indique, cette norme permet la gestion des données externes,
                             depuis un autre SGBD ou des sources diverses.
+                            <br />
                             Il est possible de créer son propre wrapper en C en utilisant
                             les fonctions prévues à cet effet.
+                            <br />
                             Des extensions comme "Multicorn" en python ou "Holycorn" en ruby
-                            apporte un lot de wrapper et permet de la créer des wrappers plus facilement.
+                            apporte un lot de wrapper et permet de créer des wrappers plus facilement.
                             Grace à ça, il existe, à ce jour, un nombre important de wrapper.
                         </aside>
                     </section>
@@ -208,6 +211,11 @@
                                 <li>Ou encore des systèmes plus atypiques comme Git, les logs systèmes, des services web ou des mails via le protocol IMAP</li>
                                 <li>Et pourquoi pas la liste des processus du système, votre timeline twitter</li>
                                 <li>Et même une connexion avec le serveur docker pour lister les containeurs ou les images</li>
+                                <li>
+                                    Très récemment un wrapper pour RabbitMQ,
+                                    c'est du coup très prometteur
+                                    pour mettre en place de l'event-sourcing.
+                                </li>
                                 <li>Et tant d'autre</li>
                             </ul>
                         </aside>
@@ -431,7 +439,7 @@
                             J'ai créer un projet avec 2 conteneurs docker
                             pour montrer l'utilisation des foreign data wrapper.
                             Le README.md explique comment l'utiliser.
-
+                            <br />
                             Les exemples suivants sont tirés de ce projet.
                         </aside>
 
@@ -608,10 +616,10 @@
                             Ce qui fait que l'on peut ajouter des index.
                             Le fait d'avoir une construction par requête permet
                             de spécialiser les informations pour notre besoin.
-
+                            <br />
                             L'option 'WITH NO DATA' est facultative,
                             elle permet de créer une vue sans charger les données.
-
+                            <br />
                             Le rafraichissement des données d'une vue matérialisée
                             se fait, simplement, avec la commande 'REFRESH MATERIALIZED VIEW'.
                         </aside>
@@ -662,20 +670,20 @@
                         <aside class="notes">
                             Je vais maintenant vous parler du cas pratique que j'ai pu mettre en place.
                             Voici une étude du besoin.
-
+                            <br />
                             Le besoin était d'avoir une application web,
                             permettant à nos clients d'accéder à leurs informations.
-
+                            <br />
                             Les données sont stockées sur un IBM/AS400 qui intègre un base DB2.
                             Premier problème le driver PHP-DB2 n'est pas facilement accessible, en tout cas sous Linux.
                             OS de notre hébergement.
                             J'ai réussi, tant bien que mal à le compiler, mais une fois fais j'avais une erreur de license.
                             Bienvenue dans le monde merveilleux d'IBM.
-
+                            <br />
                             J'avais pu remarquer qu'avec un outils de DB SQL générique développé en Java (DBeaver),
                             j'avais un connecteur JDBC pour DB2.
                             Après configuration j'ai pu facilement accéder aux données sur le serveur.
-
+                            <br />
                             C'est là que j'ai découvert les FDW et le <a href="https://github.com/heimir-sverrisson/jdbc2_fdw/">jdbc2_fdw</a>.
                             Après quelques essais plutôt concluant je me suis lancé.
                         </aside>
@@ -688,13 +696,13 @@
 
                         <aside class="notes">
                             Nous avons donc les données qui sont stockées sur l'AS400.
-
+                            <br />
                             Nous avons aussi le serveur "proxy", va lui se connecter, via jdbc2_fdw, à l'AS400.
                             Ce serveur ne sert que de passe-plat entre l'AS400 et le serveur pour le Web.
                             Il permet de faire quelques conversions de données :
                             les dates n'étaient pas stockées dans un format de date sur l'AS400
                             ou les booléens étaient stockées comme des entiers, ...
-
+                            <br />
                             Enfin nous avons la base de données pour l'appli Web.
                             Cette base de données va stocker des données qui lui sont propres.
                             Elle va aussi se connecter au serveur PostgreSQL nommé "proxy".
@@ -724,13 +732,13 @@
                             Nous avons besoin que nos données restent à jour.
                             Nous avons vu que mettre à jour une vue matérialisée est très simple.
                             Il suffit d'appeler la commande REFRESH MATERIALIZED VIEW.
-
+                            <br />
                             Comme nous avions quelques conversions entre l'AS400 et le "proxy",
                             et pour éviter de garder la connexion avec l'AS400 trop longtemps,
                             les données sont enregistrées dans des vues matérialisés.
                             Cela nous permet aussi d'avoir des index personnalisés et
                             d'améliorer les performances.
-
+                            <br />
                             J'ai mis en place l'appel du "refresh" au travers d'une fonction,
                             appelée dans une vue.
                             Cette vue pouvait être concidérée comme une table distante
@@ -799,7 +807,7 @@
                             Il est possible que nous ayons besoin de récupérer
                             des tables très volumineuse,
                             et de vouloir parcourir toutes ces données.
-
+                            <br />
                             Le problème est que le rappatriement des données peux prendre très longtemps.
                             Exemple : il est compliqué d'avoir des données à jour toutes les 10 minutes
                             si elles mettent 20 minutes à être récupérées.
@@ -847,13 +855,13 @@
                         <aside class="notes">
                             Nous allons voir rapidement comment utiliser le FDW pour git.
                             Il y a deux extensions pour GIT une en C et un composant compris dans multicorn.
-
+                            <br />
                             J'aurai préféré utiliser l'extension en C
                             mais la compilation n'a pas fonctionnée.
-
+                            <br />
                             Je me suis donc rabattu sur l'extension multicorn.
                             Sont installation est décrite dans le <a href="../../../git_fdw/README.md" target="_blank">README</a> que j'ai utilisé pour tester.
-
+                            <br />
                             Une fois l'installation faite, la configuration est très simple.
                             Comme on l'a déjà vu tout à l'heure : on crée l'extension.
                             Puis le serveur.
