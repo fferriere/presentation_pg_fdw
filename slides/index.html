@@ -133,6 +133,9 @@
                                      - <a href="https://www.postgresql.org/docs/9.6/static/external-pl.html">Extension pour PL</a> : PL/JAVA, PL/PHP, PL/Py, PL/R, PL/Ruby
                                 </li>
                                 <li>
+                                    PostgreSQL permet de stocker et de manipuler du JSON.
+                                </li>
+                                <li>
                                     PostGIS : gestion des objets Spatiaux et Géographique.
                                     Utilisé par OpenStreetMap.
                                 </li>
@@ -166,10 +169,12 @@
                             (Management of External Data), créée en 2003.
                             Comme son nom l'indique, cette norme permet la gestion des données externes,
                             depuis un autre SGBD ou des sources diverses.
+                            <br />
                             Il est possible de créer son propre wrapper en C en utilisant
                             les fonctions prévues à cet effet.
+                            <br />
                             Des extensions comme "Multicorn" en python ou "Holycorn" en ruby
-                            apporte un lot de wrapper et permet de la créer des wrappers plus facilement.
+                            apporte un lot de wrapper et permet de créer des wrappers plus facilement.
                             Grace à ça, il existe, à ce jour, un nombre important de wrapper.
                         </aside>
                     </section>
@@ -201,6 +206,11 @@
                                 <li>Ou encore des systèmes plus atypiques comme Git, les logs systèmes, des services web ou des mails via le protocol IMAP</li>
                                 <li>Et pourquoi pas la liste des processus du système, votre timeline twitter</li>
                                 <li>Et même une connexion avec le serveur docker pour lister les containeurs ou les images</li>
+                                <li>
+                                    Très récemment un wrapper pour RabbitMQ,
+                                    c'est du coup très prometteur
+                                    pour mettre en place de l'event-sourcing.
+                                </li>
                                 <li>Et tant d'autre</li>
                             </ul>
                         </aside>
@@ -226,11 +236,14 @@
 
                         <aside class="notes">
                             A ce jour il y a 2 wrappers pour GIT.
+                            <br />
                             Un premier en C.
                             Je voulais utiliser celui-ci mais malheureusement, il ne compile plus.
-
+                            <br />
                             Le second fait parti du package Multicorn.
-                            L'installation est décrite dans le <a href="../../../git_fdw/README.md" target="_blank">README</a> que j'ai utilisé pour tester.
+                            L'installation est décrite dans le <a href="https://github.com/fferriere/presentation_pg_fdw/blob/master/git_fdw/README.md" target="_blank">README</a> que j'ai utilisé pour tester.
+                            <br />
+                            <a href="http://multicorn.readthedocs.io/en/latest/getting-started.html" target="_blank">La documentation de Multicorn</a> permet de trouver les informations nécessaires.
                         </aside>
                     </section>
                 </section>
@@ -305,7 +318,7 @@
 
                         <aside class="notes">
                             Voici un exemple de requête SQL que nous pouvons faire.
-                            C'est très simple et surtout plus pratique qu'avec un `git log`.
+                            C'est très simple et surtout plus pratique qu'avec un `git log` dès qu'on veut trier ou filtrer des données.
                         </aside>
                     </section>
 
@@ -357,6 +370,8 @@ Time: 59.394 ms</code></pre>
                         </code></pre>
 
                         <aside class="notes">
+                            Il est très facile de filtrer les commits par auteur.
+                            <br />
                             Et oui, j'ai eu la joie de voir une PR validée sur le projet Atoum.
                             Comme quoi, tout le monde peux participer à un projet open-source.
                         </aside>
@@ -466,11 +481,18 @@ Time: 63.959 ms</pre>
                     </p>
 
                     <aside class="notes">
+                        Ce wrapper ne permet de récupérer que
+                        la liste des commits du repository git.
+                        On pourrait imaginer pouvoir récupérer la liste des branches.
+                        Ou des remotes.
+                        <br />
+                        Quand j'utilise la commande `git log`,
+                        j'aime bien utiliser l'option `--all`.
+                        Elle permet de lister tout les commits,
+                        comme ceux de branches non mergées.
+                        <br />
                         Le wrapper git/multicorn exécute un `git log`
-                        pour récupérer les données.
-                        Par conséquence, on ne voit pas les commits
-                        des autres branches qui ne sont pas mergées
-                        dans la branche courante.
+                        pour récupérer les données sans l'option `--all`.
                     </aside>
                 </section>
 
@@ -490,7 +512,7 @@ Time: 63.959 ms</pre>
                         tous les 2 deux écrits en Go.
                         Qui permettait de faire plus ou moins la même chose.
                         Ces projets sont encore en développement.
-
+                        <br />
                         Nous allons voir leurs utilisations.
                     </aside>
                 </section>
@@ -519,7 +541,7 @@ Time: 63.959 ms</pre>
                         <aside class="notes">
                             Premier point intéressant, on peux lister toutes les tables possibles.
                             Et surtout, il est possible de requêter sur les commits, les références (branches, tags, ...) et autres.
-                            Le FDW ne permet pas les autres récupérer les autres informations que les commits.
+                            Le FDW ne permet pas de récupérer les autres informations que les commits.
                         </aside>
                     </section>
 
@@ -681,6 +703,8 @@ Time: 63.959 ms</pre>
 
                         <aside class="notes">
                             Il est également possible de récupérer les données sous le format JSON.
+                            <br />
+                            Malheureusement, nous sommes obligés de passer par une convertion pour formater le JSON au format d'une lib comme ChartJs.
                         </aside>
                     </section>
                 </section>
@@ -698,14 +722,38 @@ Time: 63.959 ms</pre>
                             et pour les 2 projets c'est qu'on ne peux pas aussi bien filtrer qu'en SQL.
                             Par exemple pour la recherche par prénom on ne peux pas faire de LIKE.
                             Il faut rechercher avec le nom exact.
-
+                            <br />
                             Le second défaut c'est que les résultats sont plus d'ordre consultatif.
                             Même si le second projet permet l'extraction en JSON.
-
+                            <br />
                             Avec le FDW on peut manipuler les données comme dans une table.
                         </aside>
                     </section>
 
+                </section>
+
+                <section id="documentation">
+                    <h1>Documentation</h1>
+
+                    <p>
+                        <a href="https://wiki.postgresql.org/wiki/Foreign_data_wrappers">Page des Foreign Data Wrappers</a>
+                    </p>
+
+                    <p>
+                        <a href="https://www.postgresql.org/docs/">Documentation PG</a>
+                    </p>
+
+                    <p>
+                        <a href="https://www.youtube.com/watch?v=iOwnUPSY0KI">Postgresql : la nouvelle base orientée document par Yan Bonnel (Vidéos)</a>
+                    </p>
+
+                    <p>
+                        <a href="https://github.com/fferriere/presentation_pg_fdw">Projet Github</a>
+                    </p>
+
+                    <aside class="notes">
+                        Voici quelques liens intéressants pour avancer dans l'utilisation de PostgreSQL et des Foreign Data Wrappers.
+                    </aside>
                 </section>
 
                 <section id="merci">
