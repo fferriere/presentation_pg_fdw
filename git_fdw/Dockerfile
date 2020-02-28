@@ -15,3 +15,5 @@ RUN apt-get install -y git
 # Téléchargement d'un projet
 RUN cd /opt && \
     git clone https://github.com/atoum/atoum.git
+
+ENV POSTGRES_PASSWORD=postgres POSTGRES_HOST_AUTH=trust

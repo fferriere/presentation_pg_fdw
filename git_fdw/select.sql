@@ -7,7 +7,7 @@ ORDER BY nb_commit DESC, author_email ASC;
 
 SELECT *
 FROM git_atoum
-WHERE date BETWEEN 2016-01-01 AND 2016-12-31;
+WHERE date BETWEEN '2016-01-01' AND '2016-12-31';
 
 SELECT to_char(date, 'YYYY-MM') AS mois, COUNT(*) as nb_commit
 FROM git_atoum
