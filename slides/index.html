@@ -29,33 +29,7 @@
 
                 <section id="title">
                     <h1>Foreign Data Wrapper</h1>
-                    <h2>ou un réseau social pour vos données</h2>
-                    <h2>sous PostgreSQL</h2>
-                </section>
-
-                <section id="qui-suis-je">
-                    <h1>Qui suis-je ?</h1>
-
-                    <div class="flex-row">
-                        <div>
-                            <img id="avatar" class="clean-image" src="./assets/img/my-disk-world.png" alt="avatar" />
-                        </div>
-                        <div class="flex-element-centered">
-                            <div class="name">Florian FERRIERE</div>
-                            <div class="twitter">
-                                <a href="https://twitter.com/FerriereFlorian">@FerriereFlorian</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div>
-                            Développeur chez Norsys
-                        </div>
-                        <div>
-                            <img id="logo-norsys" src="./assets/img/norsys.png" alt="norsys" />
-                        </div>
-                    </div>
+                    <h2>kézako ?</h2>
                 </section>
 
                 <section id="pg_en_3_mots">
@@ -85,6 +59,11 @@
                         <p class="fragment">1995 : Ajout des fonctionnalités SQL => Postgres 95</p>
                         <p class="fragment">1996 : Renommage en PostgreSQL</p>
                         <p class="fragment">2016 : Version 9.6</p>
+                        <p class="fragment">
+                            2017 : Version 10.0
+                            <br />2018 : Version 11.0
+                            <br />2019 : Version 12.0
+                        </p>
 
                         <aside class="notes">
                             Bref historique :
@@ -96,7 +75,8 @@
                                 <li>Un tournant important arrive en 1995 avec l'ajout des fonctionnalités liés au SQL.
                                     Le projet fut alors renommé "Postgres 95"</li>
                                 <li>1 an plus tard, il devient alors "PostgreSQL".</li>
-                                <li>Beaucoup de travaux plus tard ont pu donner la version 9.6 dernière version stable à ce jour.</li>
+                                <li>Beaucoup de travaux plus tard ont pu donner, en 2016, la version 9.6. C'est la dernière version avant le changement de numéro de version</li>
+                                <li>Maintenant il y a une majeur tout les ans. Avec la version 12 qui est sorti il y a quelques mois.</li>
                             </ul>
                         </aside>
                     </section>
@@ -130,7 +110,7 @@
                                 <li>
                                     Accessible avec plein de language de programation :
                                         - JDBC pour JAVA
-                                        - lib pgsql pour PHP
+                                        - lib pgsql pour PHP, utilisable avec PDO, Doctrine, POMM, ...
                                 </li>
                                 <li>
                                     SQL :
@@ -138,7 +118,7 @@
                                      - <a href="https://www.postgresql.org/docs/9.6/static/external-pl.html">Extension pour PL</a> : PL/JAVA, PL/PHP, PL/Py, PL/R, PL/Ruby
                                 </li>
                                 <li>
-                                    PostgreSQL permet de stocker et de manipuler du JSON.
+                                    PostgreSQL permet de stocker et de manipuler du JSON depuis septembre 2012 (v9.2).
                                 </li>
                                 <li>
                                     PostGIS : gestion des objets Spatiaux et Géographique.
@@ -191,7 +171,8 @@
                             <p class="fragment">PostgreSQL</p>
                             <p class="fragment">SGBD SQL courants : MySQL, Oracle, SQL Server, SQLite, ...</p>
                             <p class="fragment">Connecteurs SQL génériques : ODBC, JDBC</p>
-                            <p class="fragment">NoSQL : MongoDB, Cassandra, Redis, ...</p>
+                            <p class="fragment">NoSQL : ElasticSearch, MongoDB, Cassandra, Redis, ...</p>
+                            <p class="fragment">Big Data : Hadoop, ...</p>
                         </div>
                         <div id="extra_fdw">
                             <p class="fragment">CSV, XML, LDAP</p>
@@ -207,6 +188,7 @@
                                 <li>Soit avec les connecteurs natifs</li>
                                 <li>Soit avec des connecteurs génériques</li>
                                 <li>Il est aussi possible de dialoguer avec des serveurs NoSQL.</li>
+                                <li>Ou même avec des serveurs de Big Data</li>
                                 <li>Il y a aussi des connecteurs vers des fichiers CSV, XML ou un serveur LDAP</li>
                                 <li>Ou encore des systèmes plus atypiques comme Git, les logs systèmes, des services web ou des mails via le protocol IMAP</li>
                                 <li>Et pourquoi pas la liste des processus du système, votre timeline twitter</li>
@@ -222,10 +204,12 @@
                     </section>
 
                     <section id="evolution1">
-                        <h1>Évolution (1/2)</h1>
+                        <h1>Évolution (1/3)</h1>
                         <div>
-                            <p class="fragment"><strong>07/2009 : v8.4</strong> => Démarrage de l'implémentation du SQL/MED</p>
-                            <p class="fragment"><strong>09/2011 : v9.1</strong> => Arrivée des "Foreign Tables"</p>
+                            <p class="fragment"><strong>07/2009 : v8.4</strong><br />
+                                Démarrage de l'implémentation du SQL/MED</p>
+                            <p class="fragment"><strong>09/2011 : v9.1</strong><br />
+                                Arrivée des "Foreign Tables"</p>
                             <p class="fragment">
                                 <strong>09/2013 : v9.3</strong><br />
                                 Ajout de l'écriture sur les Foreign Tables
@@ -247,7 +231,7 @@
                     </section>
 
                     <section id="evolution2">
-                        <h1>Évolution (2/2)</h1>
+                        <h1>Évolution (2/3)</h1>
 
                         <div>
                             <p class="fragment">
@@ -267,14 +251,15 @@
                         <aside class=notes>
                             <ul>
                                 <li>
-                                    De puis Janvier de cette année il est possible d'importé un schema distant plutôt que de créer les différentes tables distantes.
+                                    De puis Janvier 2016 il est possible d'importer un schema distant plutôt que de créer les différentes tables distantes.
                                     La version 9.5 apporte aussi la commande INSERT ... ON CONFLICT DO NOTHING ou UPDATE.
                                     Cette commande permet d'éviter les erreurs en cas d'insertion d'une ligne créant un doublon sur un champ unique.
+                                    On peut aussi entendre parler d'UPSERT.
                                     Il est possible de ne rien faire ou d'éxécuter une commande UPDATE.
                                     La commande est aussi disponible sur les tables distantes mais uniquement avec le NOTHING.
                                 </li>
                                 <li>
-                                    La dernière version est sortie en septembre 2016, elle apporte (<a href="https://wiki.postgresql.org/wiki/NewIn96#postgres_fdw" target="_blank">NewIn96</a>) :
+                                    En septembre 2016, la version 9.6 apporte (<a href="https://wiki.postgresql.org/wiki/NewIn96#postgres_fdw" target="_blank">NewIn96</a>) :
                                     <ul>
                                         <li>une amélioration pour faire le JOIN et le SORT directement sur le serveur distant</li>
                                         <li>l'amélioration de la gestion des UPDATE et les DELETE à distance (<a href="https://www.depesz.com/2016/03/22/waiting-for-9-6-directly-modify-foreign-tables/" target="_blank">lien</a>)</li>
@@ -283,6 +268,29 @@
                                     </ul>
                                 </li>
                             </ul>
+                        </aside>
+                    </section>
+
+                    <section id="evolution3">
+                        <h1>Èvolution (3/3)</h1>
+
+                        <div>
+                            <p class="fragment">
+                                <strong>10/2017 : v10.0</strong><br />
+                                Utilisation de fonctions d'aggragations à distance quand c'est possible.
+                            </p>
+
+                            <p class="fragment">
+                                <strong>10/2019 : v12.0</strong><br />
+                                Utilisation des instructions ORDER BY et LIMIT à distance.
+                            </p>
+                        </div>
+
+                        <aside class="notes">
+                            Dans les dernières versions, nous n'avons pas de grosses features.
+                            Simplement des "petites" optimisation.
+                            <li>En octobre 2017, avec la version 10 arrive l'exécution des fonctions d'aggragations distantes. En gros, les functions que l'on va pouvoir utiliser dans un GROUP BY ou un HAVING.</li>
+                            <li>En octobre 2019, les instructions ORDER BY et LIMIT sont envoyés au server distant. Cela évite au serveur local de refaire le tri après réception des données.</li>
                         </aside>
                     </section>
 
@@ -640,8 +648,8 @@
             FROM m_customer LIMIT 2;</strong>
      id | lastname | firstname | <span class="result">age</span>
     ----+----------+-----------+-----
-      <strong class="result">1 | Potter   | Harry     |  <span class="result">36</span>
-      2 | Weasley  | Ron       |  <span class="result">36</span></strong>
+      <strong class="result">1 | Potter   | Harry     |  <span class="result">39</span>
+      2 | Weasley  | Ron       |  <span class="result">39</span></strong>
     (2 lignes)
                         </code></pre>
 
@@ -922,13 +930,13 @@
  2013-T1 |       215
  2013-T2 |       234
  2013-T3 |       119
- 2013-T4 |       217</pre>
-                        <pre> quarter | nb_commit
----------+-----------
+ 2013-T4 |       217
  2014-T1 |       108
  2014-T2 |        29
  2014-T3 |        26
- 2014-T4 |       110
+ 2014-T4 |       110</pre>
+                        <pre> quarter | nb_commit
+---------+-----------
  2015-T1 |        58
  2015-T2 |        46
  2015-T3 |        65
@@ -936,8 +944,19 @@
  2016-T1 |        85
  2016-T2 |        27
  2016-T3 |        43
- 2016-T4 |         7
- (27 rows)
+ 2016-T4 |        46
+ 2017-T1 |        46
+ 2017-T2 |        19
+ 2017-T3 |        31
+ 2017-T4 |        35
+ 2018-T1 |        10
+ 2018-T4 |         2
+ 2019-T1 |         1
+ 2019-T2 |         6
+ 2019-T3 |         1
+ 2019-T4 |        11
+ 2020-T1 |         3
+ (38 rows)
 
 Time: 63.959 ms</pre>
 
@@ -994,6 +1013,10 @@ Time: 63.959 ms</pre>
 
                     <p>
                         <a href="https://www.youtube.com/watch?v=iOwnUPSY0KI">Postgresql : la nouvelle base orientée document par Yan Bonnel (Vidéos)</a>
+                    </p>
+
+                    <p>
+                        <a href="https://www.spreaker.com/user/vhe74/episode-87-un-elephant-peut-en-cacher-un">Podcast Big Data Hebdo : (#hs-veille)</a>
                     </p>
 
                     <p>
